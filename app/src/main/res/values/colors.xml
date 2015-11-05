@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6CC7EF</color>
+    <color name="colorPrimaryDark">#0288D1</color>
+    <color name="colorAccent">#FF4081</color>
+
+
+
+    <color name="bkg_card">#8C9EFF</color>
+
+
+    <color name="material_light_yellow_600">#fcd736</color>
+    <color name="material_grey_100">#f4f5f5</color>
+    <color name="main_grey_100">#f4f5f5</color>
+    <color name="main_color_grey_100">#f4f5f5</color>
+    <color name="material_light_yellow_300">#fef177</color>
+    <color name="material_yellow_300">#fef177</color>
+    <color name="material_light_yellow_500">#feea39</color>
+    <color name="material_yellow_500">#feea39</color>
+
+
+    <color name="bg_login">#186050</color>
+    <color name="bg_register">#2e3237</color>
+    <color name="bg_main">#428bca</color>
+    <color name="white">#ffffff</color>
+    <color name="input_login">#222222</color>
+    <color name="input_login_hint">#999999</color>
+    <color name="input_register">#888888</color>
+    <color name="input_register_bg">#3b4148</color>
+    <color name="input_register_hint">#5e6266</color>
+    <color name="btn_login">#26ae90</color>
+    <color name="btn_login_bg">#eceef1</color>
+    <color name="lbl_name">#333333</color>
+    <color name="btn_logut_bg">#ff6861</color>
+
+
+
+    <color name="material_grey_500">#9d9d9d</color>
+    <color name="material_grey_50">#f9fafa</color>
+    <color name="material_grey_200">#eeeeee</color>
+    <color name="material_grey_300">#e0e0e0</color>
+    <color name="material_grey_400">#bdbcbc</color>
+    <color name="material_grey_600">#757575</color>
+    <color name="material_grey_700">#616161</color>
+    <color name="material_grey_800">#424242</color>
+    <color name="material_grey_900">#202020</color>
+</resources>

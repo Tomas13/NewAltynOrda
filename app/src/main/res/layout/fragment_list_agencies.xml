@@ -1,0 +1,38 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.kz.growit.collapstoolbar.fragments.ListAgenciesFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
+        android:text="AGENCIES" />
+
+    <com.rey.material.widget.ProgressView
+        android:layout_gravity="center"
+        android:id="@+id/progressAgenciesView"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_centerInParent="true"
+        app:pv_autostart="false"
+        app:pv_circular="true"
+        app:cpd_strokeColor="#338599"
+        app:pv_progressStyle="@style/Material.Drawable.CircularProgress"
+        app:pv_progressMode="indeterminate"/>
+
+    <FrameLayout
+        android:id="@+id/containerAgencyListing"
+        android:layout_width="350dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginLeft="16dp"
+        android:layout_height="330dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="32dp"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/agenciesRV"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</FrameLayout>
