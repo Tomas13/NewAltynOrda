@@ -62,11 +62,15 @@ public class PhoneConfirmationActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            if(response.get("success").equals("true")){
-                                startActivity(new Intent(PhoneConfirmationActivity.this, MainActivity.class));
+                            if(response.getBoolean("success")){
+                                progressView.stop();
+                                Toast.makeText(PhoneConfirmationActivity.this, "Ваш код подтвержден! " +
+                                        "Добро пожаловать в Алтын Орду! " +
+                                        "Пожалуйста выполните ВХОД в систему", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(PhoneConfirmationActivity.this, LoginActivity.class));
                             }else{
                                 String errorMessage = response.getString("errors");
-
+                                progressView.stop();
                                 Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_LONG).show();
                             }
                         } catch (JSONException e) {
@@ -84,7 +88,7 @@ public class PhoneConfirmationActivity extends AppCompatActivity {
 
                     }
                 });
-        progressView.stop();
+
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
     }
 }

@@ -2,6 +2,7 @@ package kz.growit.altynorda;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 
 import android.support.design.widget.TabLayout;
+import android.widget.Toast;
 
 import com.rey.material.widget.Spinner;
 
@@ -34,8 +36,13 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarListingsList);
         setSupportActionBar(toolbar);
 
+        SharedPreferences main = getSharedPreferences(BaseActivity.APP_PREFERENCES, MODE_PRIVATE);
+
         spinner = (Spinner) findViewById(R.id.toolbarActivitySpinner);
 
+        //just cheking for token. Need to DELETE this two lines
+        SharedPreferences loginPrefs = getSharedPreferences("LoginPrefs", MainActivity.MODE_PRIVATE);
+        Toast.makeText(getApplicationContext(), loginPrefs.getString("token", ""), Toast.LENGTH_SHORT).show();
 
         AppController.getInstance().getDrawer(this, toolbar);
 

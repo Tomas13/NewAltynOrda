@@ -46,7 +46,7 @@
             android:layout_marginBottom="10dp"
             android:background="@color/white"
             android:hint="@string/phone_confirmation"
-            android:inputType="textPassword"
+            android:inputType="number"
             android:padding="10dp"
             android:singleLine="true"
             android:textColor="@color/input_login"
@@ -63,19 +63,6 @@
             android:text="@string/btn_send_phone_confirmation"
             android:textColor="@color/btn_login" />
 
-        <!-- Link to Login Screen -->
-
-
-        <Button
-            android:id="@+id/btnResendCond"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dip"
-            android:background="#eceef1"
-            android:text="@string/btn_send_again"
-            android:textAllCaps="false"
-            android:textColor="@color/btn_login"
-            android:textSize="15dp" />
 
     </LinearLayout>
 

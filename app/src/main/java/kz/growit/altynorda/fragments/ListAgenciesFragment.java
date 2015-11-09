@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import kz.growit.altynorda.AgenciesActivity;
 import kz.growit.altynorda.R;
 import kz.growit.altynorda.adapters.ListAgenciesAdapter;
+import kz.growit.altynorda.models.Agencies;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,54 +56,55 @@ public class ListAgenciesFragment extends Fragment {
 
 
     //request for Agencies list
-//    public void searchAgencies(final View listAgenciesFragment) {
-//
-//        progressView.start();
-//
-//        String url = "http://altynorda.kz/api/AgenciesAPI/GetAgencies";
-//        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-//                Request.Method.GET,
-//                url,
-//                new JSONObject(),
-//                new Response.Listener<JSONArray>() {
-//                    @Override
-//                    public void onResponse(JSONArray response) {
-//                        try {
-//                            ArrayList<Agencies> agenciesArrayList = new ArrayList<>();
-//                            for (int i = 0; i < response.length(); i++) {
-//                                JSONObject agency = (JSONObject) response.get(i);
-//                                agenciesArrayList.add(new Agencies(agency));
-//                            }
-//
-//                            //AppController.getInstance().setAgencies(agenciesArrayList);
-//
-//                            RecyclerView recyclerView = (RecyclerView) listAgenciesFragment.findViewById(R.id.agenciesRV);
-//                         //   agencies = AppController.getInstance().getAgencies();
+    public void searchAgencies(final View listAgenciesFragment) {
+
+        progressView.start();
+
+        String url = "http://altynorda.kz/api/AgenciesAPI/GetAgencies";
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                new JSONObject(),
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            ArrayList<Agencies> agenciesArrayList = new ArrayList<>();
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject agency = (JSONObject) response.get(i);
+                                agenciesArrayList.add(new Agencies(agency));
+                            }
+
+                            //need to save in database
+                            //AppController.getInstance().setAgencies(agenciesArrayList);
+
+                            RecyclerView recyclerView = (RecyclerView) listAgenciesFragment.findViewById(R.id.agenciesRV);
+                         //   agencies = AppController.getInstance().getAgencies();
 //                            listAgenciesAdapter = new ListAgenciesAdapter(agencies, (AgenciesActivity) getActivity());
-//                            recyclerView.setHasFixedSize(true);
-//                            LinearLayoutManager llm = new LinearLayoutManager(listAgenciesFragment.getContext());
-//                            recyclerView.setLayoutManager(llm);
-//
-//                            recyclerView.setAdapter(listAgenciesAdapter);
-//
-//                            progressView.stop();
-//
-//
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-////                        Log.d("Agencies request error", error.getMessage());
-//                        progressView.stop();
-//                    }
-//                });
-//
-//
-//       // AppController.getInstance().addToRequestQueue(jsonArrayRequest, "Agencies request");
-//    }
+                            recyclerView.setHasFixedSize(true);
+                            LinearLayoutManager llm = new LinearLayoutManager(listAgenciesFragment.getContext());
+                            recyclerView.setLayoutManager(llm);
+
+                            recyclerView.setAdapter(listAgenciesAdapter);
+
+                            progressView.stop();
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+//                        Log.d("Agencies request error", error.getMessage());
+                        progressView.stop();
+                    }
+                });
+
+
+       // AppController.getInstance().addToRequestQueue(jsonArrayRequest, "Agencies request");
+    }
 
 }

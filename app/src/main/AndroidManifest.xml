@@ -37,6 +37,7 @@
         <activity
             android:name=".RegisterActivity"
             android:label="@string/title_activity_register" >
+
         </activity>
         <activity
             android:name=".AgenciesActivity"
@@ -50,6 +51,7 @@
         <activity android:name=".AddPropertyActivity" >
         </activity>
         <activity android:name=".PhoneConfirmationActivity" >
+
         </activity>
         <activity android:name=".ForgotPasswordActivity" >
 

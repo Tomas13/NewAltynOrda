@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -23,10 +24,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.rey.material.widget.CheckBox;
+import com.rey.material.widget.CompoundButton;
 import com.rey.material.widget.ProgressView;
+import com.rey.material.widget.Switch;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,6 +42,7 @@ public class RegisterActivity extends Activity {
     private Button btnRegister;
     private Button btnLinkToLogin;
     private EditText inputFullName;
+    private TextView messageRegister;
     private EditText inputEmail;
     private EditText inputPassword;
     private ProgressDialog pDialog;
@@ -51,55 +56,68 @@ public class RegisterActivity extends Activity {
 
     private String AccountType;
 
-    public void onCheckboxClicked(View view) {
-        // Is the view now checked?
-        boolean checked = ((CheckBox) view).isChecked();
 
-        // Check which checkbox was clicked
-        switch(view.getId()) {
-            case R.id.privateCheckRegister:
-                if (checked)
-                    AccountType = "1";
-                break;
-            case R.id.agentCheckRegister:
-                if (checked)
-                    AccountType = "2";
-                break;
-            case R.id.agencyCheckRegister:
-                if (checked)
-                    AccountType = "3";
-                break;
+    private android.widget.CompoundButton.OnCheckedChangeListener listener = new android.widget.CompoundButton.OnCheckedChangeListener() {
+
+        @Override
+        public void onCheckedChanged(android.widget.CompoundButton buttonView, boolean isChecked) {
+            if (isChecked) {
+                switch (buttonView.getId()) {
+                    case R.id.privateCheckRegister:
+                        AccountType = "1";
+                        privateCheckBoxRegister.setChecked(true);
+                        agentCheckBoxRegister.setChecked(false);
+                        agencyCheckBoxRegister.setChecked(false);
+                        break;
+                    case R.id.agentCheckRegister:
+                        AccountType = "2";
+                        privateCheckBoxRegister.setChecked(false);
+                        agentCheckBoxRegister.setChecked(true);
+                        agencyCheckBoxRegister.setChecked(false);
+                        break;
+                    case R.id.agencyCheckRegister:
+                        AccountType = "3";
+                        privateCheckBoxRegister.setChecked(false);
+                        agentCheckBoxRegister.setChecked(false);
+                        agencyCheckBoxRegister.setChecked(true);
+                        break;
+                }
+            }
         }
-    }
+
+
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        messageRegister = (TextView) findViewById(R.id.messageRegister);
         inputFullName = (EditText) findViewById(R.id.name);
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
         btnRegister = (Button) findViewById(R.id.btnRegister);
         btnLinkToLogin = (Button) findViewById(R.id.btnLinkToLoginScreen);
-
         progressView = (ProgressView) findViewById(R.id.progressRegisterView);
-
         privateCheckBoxRegister = (CheckBox) findViewById(R.id.privateCheckRegister);
         agencyCheckBoxRegister = (CheckBox) findViewById(R.id.agencyCheckRegister);
         agentCheckBoxRegister = (CheckBox) findViewById(R.id.agentCheckRegister);
 
 
-//        View view = LayoutInflater
-//                .from(getApplicationContext())
-//                .inflate(R.layout.activity_register, RegisterActivity.this, false);
 
-//        onCheckboxClicked(view);
-//        Toast.makeText(getApplicationContext(), AccountType, Toast.LENGTH_SHORT).show();
+        privateCheckBoxRegister.setChecked(true);
+        AccountType = "1";
+
+        privateCheckBoxRegister.setOnCheckedChangeListener(listener);
+        agencyCheckBoxRegister.setOnCheckedChangeListener(listener);
+        agentCheckBoxRegister.setOnCheckedChangeListener(listener);
+
 
         // Progress dialog
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
-
+   // showDialog();
         // Session manager
 //        session = new SessionManager(getApplicationContext());
 
@@ -116,23 +134,23 @@ public class RegisterActivity extends Activity {
         // Register Button Click event
         btnRegister.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                progressView.start();
+//                Toast.makeText(RegisterActivity.this, AccountType, Toast.LENGTH_SHORT).show();
                 String name = inputFullName.getText().toString().trim();
                 String email = inputEmail.getText().toString().trim();
 //                String password = inputPassword.getText().toString().trim();
-                String accountType = "1";
 
                 if (!name.isEmpty() && !email.isEmpty()) { //&& !password.isEmpty()) {
-                    //        registerUser(name, email, password);
-                    Snackbar.make(findViewById(R.id.LLRegister),
-                            "Clicked!", Snackbar.LENGTH_LONG)
-                            .show();
 
-                    progressView.start();
+                    //progressView.start();
 
-                    registrationPostRequest(name, email, accountType);
+
+                    registrationPostRequest(name, email, AccountType);
 
 
                 } else {
+                    progressView.stop();
+                    messageRegister.setText("Заполните все поля!");
                     Snackbar.make(findViewById(R.id.LLRegister),
                             "Please enter your details!", Snackbar.LENGTH_LONG)
                             .show();
@@ -174,22 +192,28 @@ public class RegisterActivity extends Activity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Toast.makeText(getApplicationContext(), "server response is : " + response, Toast.LENGTH_LONG).show();
 
                         try {
                             if (response.getBoolean("success")){
+                               // hideDialog();
+                                progressView.stop();
+                                Toast.makeText(RegisterActivity.this, "Вы успешно зарегистрированы. Ждите СМС с кодом " +
+                                        "подтверждения", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(
                                         RegisterActivity.this,
                                         PhoneConfirmationActivity.class));
                             }else{
+                                progressView.stop();
                                 String error = response.getString("errors");
-                                Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
+                                messageRegister.setText(error);
+                                Snackbar.make(findViewById(R.id.LLRegister), error, Snackbar.LENGTH_LONG).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
-                        finish();
+                        progressView.stop();
+                        //finish();
 
                     }
                 },
@@ -270,95 +294,4 @@ public class RegisterActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
-//    *//**
-//     * Function to store user in MySQL database will post params(tag, name,
-//     * email, password) to register url
-//     * *//*
-//    private void registerUser(final String name, final String email, final Integer accountType) {
-//        // Tag used to cancel the request
-//
-//        JSONObject data = new JSONObject();
-//        try {
-//            data.put("Mobile",name);
-//            data.put("Email", email);
-//            data.put("AccountType", accountType);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//        String tag_string_req = "req_register";
-//
-//        pDialog.setMessage("Registering ...");
-//        showDialog();
-//
-//        StringRequest strReq = new StringRequest(Request.Method.POST,
-//                url, new Response.Listener<String>() {
-//
-//            @Override
-//            public void onResponse(String response) {
-//                Log.d(TAG, "Register Response: " + response.toString());
-//                hideDialog();
-//
-//                try {
-//                    JSONObject jObj = new JSONObject(response);
-//                    boolean error = jObj.getBoolean("error");
-//                    if (!error) {
-//                        JSONObject user = jObj.getJSONObject("user");
-//                        String name = user.getString("name");
-//                        String email = user.getString("email");
-//
-//
-//                        Toast.makeText(getApplicationContext(), "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
-//
-//                        // Launch login activity
-//                        Intent intent = new Intent(
-//                                RegisterActivity.this,
-//                                LoginActivity.class);
-//                        startActivity(intent);
-//                        finish();
-//                    } else {
-//
-//                        // Error occurred in registration. Get the error
-//                        // message
-//                        String errorMsg = jObj.getString("error_msg");
-//                        Toast.makeText(getApplicationContext(),
-//                                errorMsg, Toast.LENGTH_LONG).show();
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//        }, new Response.ErrorListener() {
-//
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-////                Log.e(TAG, "Registration Error: " + error.getMessage());
-//                Toast.makeText(getApplicationContext(),
-//                        error.getMessage(), Toast.LENGTH_LONG).show();
-//                hideDialog();
-//            }
-//        }) {
-//
-//            @Override
-//            protected Map<String, String> getParams() {
-//                // Posting params to register url
-//                Map<String, String> params = new HashMap<String, String>();
-//                params.put("name", name);
-//                params.put("email", email);
-////                params.put("password", password);
-//
-//                return params;
-//            }
-//
-//        };
-//
-//        // Adding request to request queue
-//        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-//    }
-
-
 }

@@ -51,6 +51,7 @@ public class LoginActivity extends Activity {
 
         loginPrefs = getSharedPreferences("LoginPrefs", LoginActivity.MODE_PRIVATE);
 
+
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
         btnLogin = (Button) findViewById(R.id.btnLogin);
@@ -85,23 +86,25 @@ public class LoginActivity extends Activity {
                 String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
 
+                progressView.start();
+
                 // Check for empty data in the form
                 if (!email.isEmpty() && !password.isEmpty()) {
-                    // login user
-//                    checkLogin(email, password);
-                    Snackbar.make(findViewById(R.id.LLayout),
-                            "You entered the credentials!", Snackbar.LENGTH_LONG)
-                            .show();
-
 
                     loginPostRequest(email, password);
 
                 } else {
+                    progressView.stop();
                     // Prompt user to enter credentials
-                    Snackbar.make(findViewById(R.id.LLayout),
-                            "Please enter the credentials!", Snackbar.LENGTH_LONG)
-                            .show();
+
+                    Snackbar snackbar = Snackbar.make(findViewById(R.id.LLayout),
+                            "Пожалуйста заполните все поля!", Snackbar.LENGTH_LONG);
+
+                            snackbar.getView().setBackgroundColor(getResources().getColor(R.color.color_snack));
+                            snackbar.show();
                 }
+
+
             }
 
         });
@@ -131,7 +134,7 @@ public class LoginActivity extends Activity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        progressView.start();
+
         String url = "http://altynorda.kz/SGAccountAPI/Login";
 
 
@@ -143,35 +146,47 @@ public class LoginActivity extends Activity {
                     public void onResponse(JSONObject response) {
 
                         try {
-                            msg = response.getString("errors");
-                            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+//                            msg = response.getString("errors");
+//                            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
 
-                            if (response.getString("success").equals("true")) {
+                            if (response.getBoolean("success")) {
+
 
                                 //getting the token and saving in SharedPrefs
                                 token = response.getString("token");
+
+//                                SharedPreferences loginPref = getSharedPreferences(BaseActivity.APP_PREFERENCES, MODE_PRIVATE);
+
+
                                 SharedPreferences.Editor editor = loginPrefs.edit();
-                                editor.putString("token", token);
+                                editor.putString(BaseActivity.GAME_PREFERENCES_TOKEN, token);
+                                editor.commit();
+
 
                                 Toast.makeText(getApplicationContext(), "Авторизация успешна", Toast.LENGTH_LONG).show();
+                                progressView.stop();
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
 
                             }else{
 
-                                //user needs to confirm the phone number
-                                if (response.getString("redirect").equals("PhoneConfirmation")) {
-                                    startActivity(new Intent(LoginActivity.this, PhoneConfirmationActivity.class));
-                                }else{
-                                    //if got here then there's some errors
+                                if(!response.getString("errors").isEmpty()){
                                     String errors = response.getString("errors");
                                     Toast.makeText(getApplicationContext(), errors, Toast.LENGTH_SHORT).show();
+                                    progressView.stop();
                                 }
+                                //user needs to confirm the phone number
+                                if (response.getString("redirect").equals("PhoneConfirmation")) {
+                                    progressView.stop();
+                                    startActivity(new Intent(LoginActivity.this, PhoneConfirmationActivity.class));
+
+                                }
+
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
-                        progressView.stop();
                     }
                 },
                 new Response.ErrorListener() {

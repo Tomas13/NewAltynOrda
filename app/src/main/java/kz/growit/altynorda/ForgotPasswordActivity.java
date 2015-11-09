@@ -41,6 +41,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         btnSendPhoneForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                progressView.start();
                 String UserName = phoneForgotPassword.getText().toString().trim();
                 forgotPasswordRequest(UserName);
             }
@@ -51,8 +53,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
 
     private void forgotPasswordRequest(final String UserName) {
-        progressView.start();
-        String url = "http://altynorda.kz/SGAccountAPI/ForgotPassword?UserName="+UserName;
+
+        String url = "http://altynorda.kz/SGAccountAPI/ForgotPassword";//?UserName="+UserName;
 
         JSONObject data = new JSONObject();
         try {
@@ -60,7 +62,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 url,
                 data,
                 new Response.Listener<JSONObject>() {
@@ -90,20 +92,54 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
 
+                        String json = null;
+
+                        NetworkResponse response = error.networkResponse;
+                        if (response != null && response.data != null) {
+//                            switch (response.statusCode) {
+//                                case 400:
+                            json = new String(response.data);
+                            json = trimMessage(json, "message");
+                            if (json != null) {
+                                Toast.makeText(getApplicationContext(), json, Toast.LENGTH_LONG).show();
+                                displayMessage(json);
+                            }
+//                                    break;
+                        }
+
                             serverMessage = error.toString();
 
                             Toast.makeText(getApplicationContext(), serverMessage, Toast.LENGTH_LONG).show();
 
-                            progressView.stop();
+
                         }
                         //}
 
                 });
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
-
+        progressView.stop();
         Toast.makeText(getApplicationContext(), serverMessage, Toast.LENGTH_LONG).show();
 
 
+    }
+
+    //Somewhere that has access to a context
+    public void displayMessage(String toastString){
+        Toast.makeText(getApplicationContext(), toastString, Toast.LENGTH_LONG).show();
+    }
+
+    public String trimMessage(String json, String key){
+        String trimmedString = null;
+
+        try{
+            JSONObject obj = new JSONObject(json);
+            trimmedString = obj.getString(key);
+        } catch(JSONException e){
+            e.printStackTrace();
+            return null;
+        }
+
+        return trimmedString;
     }
 }
 
