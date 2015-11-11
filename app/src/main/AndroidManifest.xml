@@ -51,6 +51,7 @@
         <activity android:name=".PhoneConfirmationActivity" >
         </activity>
         <activity android:name=".ForgotPasswordActivity" >
+
         </activity>
         <activity android:name=".ChangePasswordActivity" >
         </activity>

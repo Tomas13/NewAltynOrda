@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +54,8 @@ public class InsideListingActivity extends AppCompatActivity {
     private ProgressView progressView;
     private int CityId;
 
+    int intentData;
+
     private RecyclerView recyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +63,7 @@ public class InsideListingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_inside_listing);
 
 
-        final int intentData = getIntent().getIntExtra("index", 1);
+        intentData = getIntent().getIntExtra("index", 1);
 
 
         recyclerView = (RecyclerView) findViewById(R.id.activityInsideRV);
@@ -68,6 +71,7 @@ public class InsideListingActivity extends AppCompatActivity {
         progressView = (ProgressView) findViewById(R.id.progressInsideListingView);
 
 
+        Snackbar.make(findViewById(R.id.relativeLayout), intentData + "", Snackbar.LENGTH_LONG).show();
         SharedPreferences loginPrefs = getSharedPreferences("LoginPrefs", MainActivity.MODE_PRIVATE);
         final String token =  loginPrefs.getString("Token", "");
 
@@ -82,7 +86,6 @@ public class InsideListingActivity extends AppCompatActivity {
 //                    Toast.makeText(v.getContext(), intentData + "", Toast.LENGTH_SHORT).show();
                     progressView.start();
                     postComment(comment.getText().toString(), intentData, token);
-//                    Toast.makeText(v.getContext(), "sdf", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -124,53 +127,28 @@ public class InsideListingActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-
                         try {
-//                            msg = response.getString("errors");
-//                            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
-
                             if (response.getBoolean("success")) {
-
-
-                                //getting the token and saving in SharedPrefs
-
-//                                SharedPreferences loginPref = getSharedPreferences(BaseActivity.APP_PREFERENCES, MODE_PRIVATE);
-
-
-//                                SharedPreferences.Editor editor = loginPrefs.edit();
-//                                editor.putString(BaseActivity.GAME_PREFERENCES_TOKEN, token);
-//                                editor.commit();
-
-
-                                Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_LONG).show();
+                                Snackbar.make(findViewById(R.id.relativeLayout), "Комментарий отправлен", Snackbar.LENGTH_LONG).show();
+//                                Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_LONG).show();
                                 progressView.stop();
-//                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-
                             }else{
-
                                 Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_LONG).show();
-
-//
 //                                if(!response.getString("errors").isEmpty()){
 //                                    String errors = response.getString("errors");
 //                                    Toast.makeText(getApplicationContext(), errors, Toast.LENGTH_SHORT).show();
 //                                    progressView.stop();
 //                                }
-
-
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
 //                        NetworkResponse response = error.networkResponse;
-
                         String errors = error.getMessage();
                         Toast.makeText(getApplicationContext(), errors, Toast.LENGTH_LONG).show();
                         progressView.stop();

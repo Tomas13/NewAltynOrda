@@ -56,7 +56,15 @@ public class MainActivity extends AppCompatActivity {
 
         //just cheking for token. Need to DELETE this two lines
         SharedPreferences loginPrefs = getSharedPreferences("LoginPrefs", MainActivity.MODE_PRIVATE);
-        Toast.makeText(getApplicationContext(), loginPrefs.getString("Token", ""), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), loginPrefs.getString("Token", "not logged in"), Toast.LENGTH_SHORT).show();
+
+
+        String token = loginPrefs.getString("Token", "not logged in");
+        if(token!="not logged in"){
+            Toast.makeText(MainActivity.this, "Logged in", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(MainActivity.this, "Not logged in", Toast.LENGTH_SHORT).show();
+        }
 
         AppController.getInstance().getDrawer(this, toolbar);
 
