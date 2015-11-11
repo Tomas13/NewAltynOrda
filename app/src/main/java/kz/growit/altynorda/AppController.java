@@ -157,7 +157,7 @@ public class AppController extends Application {
                                 activity.startActivity(new Intent(getApplicationContext(), AgenciesActivity.class));
                                 return false;
                             case 3:
-//                                activity.startActivity(new Intent(getApplicationContext(), OneCard.class));
+                                activity.startActivity(new Intent(getApplicationContext(), FavoritesActivity.class));
                                 return false;
                             case 4:
                                 return false;

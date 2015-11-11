@@ -1,8 +1,11 @@
 package kz.growit.altynorda.fragments;
 
 
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -149,6 +152,8 @@ public class ListingsListFragment extends Fragment {
     @Override
     public void onResume() {
         refreshList();
+
+
         super.onResume();
 
     }
@@ -188,9 +193,20 @@ public class ListingsListFragment extends Fragment {
                         }
                         setMyListings(listings);
                         ListingsRVAdapter myAdapter = new ListingsRVAdapter(listings, (MainActivity) getActivity());
-                        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+//                        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+
+
+                        //set number of columns depending on orientation
+                        if(getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+                            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+                        }
+                        else{
+                            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                        }
+
                         recyclerView.setHasFixedSize(true);
                         recyclerView.setAdapter(myAdapter);
+
 
                         progressView.stop();
                     }

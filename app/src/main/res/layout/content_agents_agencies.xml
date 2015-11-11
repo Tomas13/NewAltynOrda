@@ -19,6 +19,8 @@
                 android:background="@color/colorPrimary"
                 app:layout_scrollFlags="scroll|enterAlways">
 
+
+
                 <com.rey.material.widget.Spinner
                     android:id="@+id/toolbarActivitySpinner"
                     style="@style/Material.Widget.Spinner"
@@ -28,6 +30,18 @@
                     android:layout_marginLeft="40dp"
                     android:popupBackground="#8e000000"
                     app:rd_style="@style/Material.Drawable.Ripple.Wave" />
+
+                <com.rey.material.widget.Button
+                    android:layout_marginLeft="30dp"
+                    android:id="@+id/FiltersButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:rd_enable="true"
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Widget.Button"
+                    android:background="@null"
+                    android:text="ФИЛЬТРЫ"/>
+
+
             </android.support.v7.widget.Toolbar>
 
             <android.support.design.widget.TabLayout

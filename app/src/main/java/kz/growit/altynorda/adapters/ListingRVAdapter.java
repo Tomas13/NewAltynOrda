@@ -12,60 +12,57 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
+import com.rey.material.widget.Button;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import kz.growit.altynorda.InsideListingActivity;
-import kz.growit.altynorda.LoginActivity;
 import kz.growit.altynorda.R;
 import kz.growit.altynorda.models.Listings;
 
-public class ListingsRVAdapter extends RecyclerView.Adapter<ListingsRVAdapter.ListingsRVViewHolder> {
+public class ListingRVAdapter extends RecyclerView.Adapter<ListingRVAdapter.ListingRVViewHolder> {
     private ArrayList<Listings> listings;
     private Activity activity;
     private Boolean isFavorite = false;
 
     private ArrayList<Integer> favoritesId = new ArrayList<>();
 
-    public ListingsRVAdapter(ArrayList<Listings> listings, Activity activity) {
+    public ListingRVAdapter(ArrayList<Listings> listings, Activity activity) {
         this.activity = activity;
         this.listings = listings;
     }
 
     @Override
-    public ListingsRVViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ListingRVViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View itemView = LayoutInflater
                 .from(parent.getContext())
-                .inflate(R.layout.my_listing_card_layout, parent, false);
+                .inflate(R.layout.listing_full_layout, parent, false);
 
 
-        return new ListingsRVViewHolder(itemView);
+        return new ListingRVViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final ListingsRVViewHolder holder, int position) {
+    public void onBindViewHolder(final ListingRVViewHolder holder, int position) {
         Listings item = listings.get(position);
         holder.username.setText(item.getUsername());
         holder.username.setTextColor(activity.getResources().getColor(R.color.colorAccent));
         holder.address.setText(item.getAddress());
         holder.totalArea.setText(item.getTotalArea());
+        holder.description.setText(item.getDescription());
 //        holder.RoomCount.setText(item.getRoomCount());
         holder.Price.setText(item.getPrice());
-        holder.Price.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent goToInside = new Intent(v.getContext(), InsideListingActivity.class);
-                goToInside.putExtra("index", holder.Id);
-                v.getContext().startActivity(goToInside);
-            }
-        });
+
+
         holder.Id = item.getId();
         holder.thumb.removeAllSliders();
         for (int i = 0; i < item.getAllPictures().size(); i++) {
@@ -75,6 +72,8 @@ public class ListingsRVAdapter extends RecyclerView.Adapter<ListingsRVAdapter.Li
                 holder.thumb.addSlider(dsv);
             }
         }
+
+
 
 
         holder.linearLayoutCardLayout.setOnClickListener(new View.OnClickListener() {
@@ -144,17 +143,19 @@ public class ListingsRVAdapter extends RecyclerView.Adapter<ListingsRVAdapter.Li
         return listings.size();
     }
 
-    public static class ListingsRVViewHolder extends RecyclerView.ViewHolder {
-        private TextView username, address, totalArea, RoomCount, Price;
+    public static class ListingRVViewHolder extends RecyclerView.ViewHolder {
+        private TextView username, address, description, totalArea, RoomCount, Price;
         private SliderLayout thumb;
         private ImageButton favorite;
-
+//        EditText comment;
+//        Button sendComment;
         private int Id;
 
         private LinearLayout linearLayoutCardLayout;
 
-        public ListingsRVViewHolder(View itemView) {
+        public ListingRVViewHolder(View itemView) {
             super(itemView);
+            description = (TextView) itemView.findViewById(R.id.description);
             thumb = (SliderLayout) itemView.findViewById(R.id.thumbnailImageViewListingRow);
             username = (TextView) itemView.findViewById(R.id.usernameTVListingRow);
             address = (TextView) itemView.findViewById(R.id.addressTextViewListingRow);
@@ -163,6 +164,16 @@ public class ListingsRVAdapter extends RecyclerView.Adapter<ListingsRVAdapter.Li
             Price = (TextView) itemView.findViewById(R.id.priceTextViewListingRow);
             favorite = (ImageButton) itemView.findViewById(R.id.favorite);
 
+//            comment = (EditText) itemView.findViewById(R.id.comment);
+//            sendComment = (Button) itemView.findViewById(R.id.sendComment);
+//            sendComment.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+////                    Toast.makeText(v.getContext(), intentData + "", Toast.LENGTH_SHORT).show();
+////                    postComment();
+//                    Toast.makeText(v.getContext(), "sdf", Toast.LENGTH_SHORT).show();
+//                }
+//            });
 
             linearLayoutCardLayout = (LinearLayout) itemView.findViewById(R.id.linearLayoutCardLayout);
         }

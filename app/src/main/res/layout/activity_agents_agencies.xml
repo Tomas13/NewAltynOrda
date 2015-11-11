@@ -21,12 +21,5 @@
 
     <include layout="@layout/content_agents_agencies" />
 
-    <!--<FrameLayout-->
-        <!--android:id="@+id/tListingsContainer"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_marginTop="?attr/actionBarSize"/>-->
-
-
 
 </android.support.design.widget.CoordinatorLayout>

@@ -45,4 +45,13 @@
     <string name="btn_change_psw">Изменить пароль</string>
     <string name="old_password">Старый пароль</string>
 
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="rent">Аренда</string>
+    <string name="sale">Продажа</string>
+    <string name="search">Поиск</string>
+    <string name="tenge">₸</string>
+    <string name="dollar">$</string>
+    <string name="euro">€</string>
+
 </resources>

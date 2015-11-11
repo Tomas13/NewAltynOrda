@@ -36,17 +36,7 @@ public class Listings {
                 this.allPictures.add(item);
             }
 
-            JSONArray comments = resp.getJSONArray("allComments");
-            for (int i = 0; i < comments.length(); i++) {
-                Comments item = new Comments(comments.getJSONObject(i));
-                allComments.add(item);
-            }
 
-            this.PendingDate = resp.getString("PendingDate");
-            this.ApprovedDate = resp.getString("ApprovedDate");
-            this.RejectedDate = resp.getString("RejectedDate");
-            this.LastUpdate = resp.getString("LastUpdate");
-            this.CreatedDate = resp.getString("CreatedDate");
 
             this.Id = resp.getInt("Id");
 //            this.AgencyId = resp.getInt("AgencyId");
@@ -56,7 +46,7 @@ public class Listings {
 //            this.PropertyTypeId = resp.getInt("PropertyTypeId");
 //            this.Floor = resp.getInt("Floor");
 //            this.TotalFloors = resp.getInt("TotalFloors");
-         //   this.RoomCount = resp.getInt("RoomCount");
+            //   this.RoomCount = resp.getInt("RoomCount");
 //            this.RentTypeId = resp.getInt("RentTypeId");
 //            this.BedCount = resp.getInt("BedCount");
 //            this.WallMaterialId = resp.getInt("WallMaterialId");
@@ -76,6 +66,11 @@ public class Listings {
             this.CeilingHeight = resp.getString("CeilingHeight");
             this.MaxNumberPeopleForReservation = resp.getString("MaxNumberPeopleForReservation");
 
+            this.PendingDate = resp.getString("PendingDate");
+            this.ApprovedDate = resp.getString("ApprovedDate");
+            this.RejectedDate = resp.getString("RejectedDate");
+            this.LastUpdate = resp.getString("LastUpdate");
+            this.CreatedDate = resp.getString("CreatedDate");
 //            this.IsZalog = resp.getBoolean("IsZalog");
 //            this.IsDorm = resp.getBoolean("IsDorm");
 //            this.IsMicrowave = resp.getBoolean("IsMicrowave");
@@ -129,6 +124,13 @@ public class Listings {
 //            this.Approved = resp.getBoolean("Approved");
 //            this.Rejected = resp.getBoolean("Rejected");
 
+            JSONArray comments = resp.getJSONArray("allComments");
+            if (comments.length() != 0) {
+                for (int i = 0; i < comments.length(); i++) {
+                    Comments item = new Comments(comments.getJSONObject(i));
+                    allComments.add(item);
+                }
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();

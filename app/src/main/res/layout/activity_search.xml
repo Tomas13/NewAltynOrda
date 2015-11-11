@@ -1,0 +1,120 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#C5CAE9"
+    android:id="@+id/frameLSearch"
+    tools:context="kz.growit.altynorda.fragments.SearchFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+        <!-- TODO: Update blank fragment layout -->
+        <TextView
+            android:id="@+id/titleListingsSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:gravity="center_horizontal"
+            android:text="Поиск недвижимости"
+            android:textSize="26dp" />
+
+
+        <com.rey.material.widget.Spinner
+            android:id="@+id/listingType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/titleListingsSearch"
+            android:popupBackground="#8e000000" />
+
+        <com.rey.material.widget.Spinner
+            android:id="@+id/listingCity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/listingType"
+            android:layout_marginTop="16dp"
+            android:popupBackground="#8e000000" />
+
+        <com.rey.material.widget.Spinner
+            android:id="@+id/listingStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/listingCity"
+            android:layout_marginTop="16dp"
+            android:popupBackground="#8e000000"
+            />
+
+        <com.rey.material.widget.ProgressView
+            android:id="@+id/progressSearchView"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            app:cpd_strokeColor="#338599"
+            app:pv_autostart="false"
+            app:pv_circular="true"
+            app:pv_progressMode="indeterminate"
+            app:pv_progressStyle="@style/Material.Drawable.CircularProgress" />
+
+
+
+        <LinearLayout
+            android:id="@+id/priceLL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/listingStatus"
+            android:orientation="horizontal">
+
+            <com.rey.material.widget.Spinner
+                android:popupBackground="#8e000000"
+                android:id="@+id/currency"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                 />
+
+            <EditText
+                android:id="@+id/priceFrom"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="16dp"
+                android:hint="от" />
+
+
+            <EditText
+                android:id="@+id/priceTo"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="16dp"
+                android:hint="до" />
+        </LinearLayout>
+
+        <com.rey.material.widget.Button
+            android:id="@+id/searchButtonSearchFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/priceLL"
+            android:text="@string/search"
+            app:rd_enable="true" />
+
+
+
+        <com.rey.material.widget.Spinner
+            android:id="@+id/listingsResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/searchButtonSearchFragment"
+            android:layout_marginTop="16dp"
+            android:popupBackground="#8e000000"
+            />
+
+        <ListView
+            android:layout_below="@id/listingsResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/list"/>
+
+    </RelativeLayout>
+</FrameLayout>

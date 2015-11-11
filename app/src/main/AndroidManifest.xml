@@ -32,12 +32,10 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" >
-
         </activity>
         <activity
             android:name=".RegisterActivity"
             android:label="@string/title_activity_register" >
-
         </activity>
         <activity
             android:name=".AgenciesActivity"
@@ -51,12 +49,18 @@
         <activity android:name=".AddPropertyActivity" >
         </activity>
         <activity android:name=".PhoneConfirmationActivity" >
-
         </activity>
         <activity android:name=".ForgotPasswordActivity" >
-
         </activity>
         <activity android:name=".ChangePasswordActivity" >
+        </activity>
+        <activity android:name=".SearchActivity" >
+        </activity>
+        <activity android:name=".ResultsActivity" >
+        </activity>
+        <activity android:name=".FavoritesActivity" >
+        </activity>
+        <activity android:name=".InsideListingActivity" >
 
         </activity>
     </application>
