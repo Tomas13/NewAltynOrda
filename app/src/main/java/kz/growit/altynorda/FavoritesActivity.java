@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -39,15 +40,20 @@ public class FavoritesActivity extends AppCompatActivity {
 
         SharedPreferences favorites = getSharedPreferences("FavoritesPrefs", MODE_PRIVATE);
 
-        String fav = favorites.getString("favoriteId", "");
+        int FavId = favorites.getInt("favoriteId", -1);
+        refreshFavoritesList(FavId);
 
-        try {
-            FavoriteJsonArray = new JSONObject(fav);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        progressView.stop();
 
-        for (int i = 0; i < FavoriteJsonArray.length(); i++) {
+//        String fav = favorites.getString("favoriteId", "");
+
+//        try {
+//            FavoriteJsonArray = new JSONObject(fav);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//        for (int i = 0; i < FavoriteJsonArray.length(); i++) {
 
         }
 //        int id = favorites.getInt("favoriteId", 0);
@@ -58,11 +64,17 @@ public class FavoritesActivity extends AppCompatActivity {
 
 
 
-    }
+
 
 
     private void refreshFavoritesList(int id) {
         progressView.start();
+
+        if(id == -1){
+            Toast.makeText(FavoritesActivity.this, "У вас нет избранных недвижимостей", Toast.LENGTH_SHORT).show();
+
+            return;
+        }
 
         String url = "http://altynorda.kz/api/ListingsAPI/GetListing?id=" + id ;
         JsonObjectRequest getListingsById = new JsonObjectRequest(

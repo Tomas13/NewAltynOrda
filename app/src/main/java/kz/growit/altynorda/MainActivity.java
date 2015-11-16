@@ -15,9 +15,15 @@ import android.widget.ArrayAdapter;
 import android.support.design.widget.TabLayout;
 import android.widget.Toast;
 
+import com.rey.material.app.DatePickerDialog;
+import com.rey.material.app.Dialog;
+import com.rey.material.app.DialogFragment;
+import com.rey.material.app.SimpleDialog;
+import com.rey.material.app.ThemeManager;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.Spinner;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,8 +34,9 @@ public class MainActivity extends AppCompatActivity {
     private Spinner spinner;
 
     private Button FiltersButton;
+    private Boolean isLoggedIn = false;
 
-
+    private Dialog.Builder builder = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +48,13 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences main = getSharedPreferences(BaseActivity.APP_PREFERENCES, MODE_PRIVATE);
 
-
+//        mDialog
+//                .title("Dialog title")
+//                .positiveAction("OK")
+//                .negativeAction("CANCEL")
+//                .cancelable(true)
+//
+//        .show();
 
         FiltersButton = (Button) findViewById(R.id.FiltersButton);
         FiltersButton.setOnClickListener(new View.OnClickListener() {
@@ -61,8 +74,10 @@ public class MainActivity extends AppCompatActivity {
 
         String token = loginPrefs.getString("Token", "not logged in");
         if(token!="not logged in"){
+            isLoggedIn = true;
             Toast.makeText(MainActivity.this, "Logged in", Toast.LENGTH_SHORT).show();
         }else{
+            isLoggedIn = false;
             Toast.makeText(MainActivity.this, "Not logged in", Toast.LENGTH_SHORT).show();
         }
 
@@ -72,10 +87,13 @@ public class MainActivity extends AppCompatActivity {
         List<String> list = new ArrayList<String>();
         list.add("Astana");
         list.add("Almaty");
-        list.add("Taraz");
-        list.add("Shymkent");
-        list.add("Atyrau");
+        list.add("Karaganda");
         list.add("Aktau");
+        list.add("Zhezkazgan");
+        list.add("Taraz");
+        list.add("Kostanay");
+        list.add("Astana33");
+
 //        final ArrayList<String> arrayList = new ;
 //        for (int i = 0; i < arrayList.size(); i++) {
 //            list.add(arrayList.get(i).getName());
@@ -115,8 +133,36 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                view.getContext().startActivity(new Intent(MainActivity.this, AddPropertyActivity.class));
-            }
+//                if(isLoggedIn){
+
+                boolean isLightTheme = ThemeManager.getInstance().getCurrentTheme() == 0;
+
+                builder = new DatePickerDialog.Builder(isLightTheme ?
+                        R.style.Material_App_Dialog_DatePicker_Light : R.style.Material_App_Dialog_DatePicker) {
+                    @Override
+                    public void onPositiveActionClicked(com.rey.material.app.DialogFragment fragment) {
+                        DatePickerDialog dialog = (DatePickerDialog) fragment.getDialog();
+                        String date = dialog.getFormattedDate(SimpleDateFormat.getDateInstance());
+                        Toast.makeText(getApplicationContext(), "Date is " + date, Toast.LENGTH_SHORT).show();
+                        super.onPositiveActionClicked(fragment);
+                    }
+
+                    @Override
+                    public void onNegativeActionClicked(com.rey.material.app.DialogFragment fragment) {
+                        Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_SHORT).show();
+                        super.onNegativeActionClicked(fragment);
+                    }
+                };
+
+                builder.positiveAction("OK")
+                        .negativeAction("CANCEL");
+
+
+
+//                    Toast.makeText(MainActivity.this, "", Toast.LENGTH_SHORT).show();
+                }
+//                view.getContext().startActivity(new Intent(MainActivity.this, AddPropertyActivity.class));
+//            }
         });
     }
 

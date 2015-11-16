@@ -53,7 +53,7 @@ public class InsideListingActivity extends AppCompatActivity {
     private ArrayList<Listings> listings = new ArrayList<>();
     private ProgressView progressView;
     private int CityId;
-
+    JSONObject commentObject;
     int intentData;
 
     private RecyclerView recyclerView;
@@ -63,15 +63,16 @@ public class InsideListingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_inside_listing);
 
 
-        intentData = getIntent().getIntExtra("index", 1);
+        intentData = getIntent().getIntExtra("index", 26);
 
+        Id = intentData;
 
         recyclerView = (RecyclerView) findViewById(R.id.activityInsideRV);
 
         progressView = (ProgressView) findViewById(R.id.progressInsideListingView);
 
 
-        Snackbar.make(findViewById(R.id.relativeLayout), intentData + "", Snackbar.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), intentData + "", Toast.LENGTH_LONG).show();
         SharedPreferences loginPrefs = getSharedPreferences("LoginPrefs", MainActivity.MODE_PRIVATE);
         final String token =  loginPrefs.getString("Token", "");
 
@@ -107,7 +108,7 @@ public class InsideListingActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        JSONObject commentObject = new JSONObject();
+        commentObject = new JSONObject();
 
 
         try {
@@ -133,7 +134,8 @@ public class InsideListingActivity extends AppCompatActivity {
 //                                Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_LONG).show();
                                 progressView.stop();
                             }else{
-                                Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_LONG).show();
+                                Snackbar.make(findViewById(R.id.relativeLayout), "Ошибка. Комментарий не отправлен", Snackbar.LENGTH_LONG).show();
+                                progressView.stop();
 //                                if(!response.getString("errors").isEmpty()){
 //                                    String errors = response.getString("errors");
 //                                    Toast.makeText(getApplicationContext(), errors, Toast.LENGTH_SHORT).show();
@@ -153,17 +155,7 @@ public class InsideListingActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), errors, Toast.LENGTH_LONG).show();
                         progressView.stop();
                     }
-                }) {
-            /**
-             * Passing some request headers
-             * */
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/json; charset=utf-8");
-                return headers;
-            }
-        };
+                });
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
     }
     private ArrayList<Listings> myListings;
@@ -181,9 +173,9 @@ public class InsideListingActivity extends AppCompatActivity {
         progressView.start();
 
 
-        Id = 30; //need to change according to spinner selection
+//        Id = 30; //need to change according to spinner selection
 
-        String url = "http://altynorda.kz/api/ListingsAPI/GetListing?id=30"; //+ Id ;
+        String url = "http://altynorda.kz/api/ListingsAPI/GetListing?id=" + Id ;
         JsonObjectRequest getListingsByCityReq = new JsonObjectRequest(
                 Request.Method.GET,
                 url,

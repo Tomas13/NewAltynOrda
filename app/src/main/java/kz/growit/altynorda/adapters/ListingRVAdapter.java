@@ -89,8 +89,8 @@ public class ListingRVAdapter extends RecyclerView.Adapter<ListingRVAdapter.List
         });
 
 
-        favoritesId.add(26);
-        favoritesId.add(28);
+//        favoritesId.add(26);
+//        favoritesId.add(28);
 
 
         holder.favorite.setOnClickListener(new View.OnClickListener() {
@@ -105,10 +105,17 @@ public class ListingRVAdapter extends RecyclerView.Adapter<ListingRVAdapter.List
 
 //                    favoritesId.add(id);
 
+//                    String favorites = favoritesId.toString();
+
+                    SharedPreferences sp = activity.getSharedPreferences("FavoritesPrefs", Activity.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putInt("favoriteId", holder.Id);
+                    editor.commit();
 
                     holder.favorite.setImageDrawable(v.getResources().getDrawable(R.drawable.ic_favorite_black_24dp));
                     isFavorite = false;
                 } else {
+
 
 //                    Iterator<Integer> iterator = favoritesId.iterator();
 //                    while(iterator.hasNext())
@@ -125,12 +132,7 @@ public class ListingRVAdapter extends RecyclerView.Adapter<ListingRVAdapter.List
                 }
 
 
-                String favorites = favoritesId.toString();
 
-                SharedPreferences sp = activity.getSharedPreferences("FavoritesPrefs", Activity.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putString("favoriteId", favorites);
-                editor.commit();
             }
         });
 

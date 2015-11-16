@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -35,13 +36,22 @@ public class SearchActivity extends AppCompatActivity {
     private Spinner listingCity;
     private Spinner listingStatus;
     private Spinner currency;
-    private EditText priceFrom;
-    private EditText priceTo;
+    private EditText fromPrice;
+    private EditText untilPrice;
     private Button searchButtonSearchFragment;
-    String city;
-    ProgressView progressView;
-    Spinner listingsResult;
-    ArrayList<String> titles;
+    private ProgressView progressView;
+    private Spinner listingsResult;
+    private ArrayList<String> titles;
+    private String city;
+    private int cityId = 1;
+    private String PropertyType;
+    private int PropertyTypeId; //1 - for sale, 2 - for rent
+    private String Exchange;
+    private int ExchangeId;
+    private ArrayList<String> listStatus;
+    private Integer fromPriceInt;
+    private Integer untilPriceInt;
+    private String url;
 
 String title;
 
@@ -55,36 +65,127 @@ String title;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        listingsResult = (Spinner) findViewById(R.id.listingsResult);
+//        listingsResult = (Spinner) findViewById(R.id.listingsResult);
         progressView = (ProgressView) findViewById(R.id.progressSearchView);
         listingType = (Spinner) findViewById(R.id.listingType);
         listingCity = (Spinner) findViewById(R.id.listingCity);
         listingStatus = (Spinner) findViewById(R.id.listingStatus);
-        currency = (Spinner) findViewById(R.id.currency);
-        priceFrom = (EditText) findViewById(R.id.priceFrom);
-        priceTo = (EditText) findViewById(R.id.priceTo);
+        currency = (Spinner) findViewById(R.id.exchange);
+        fromPrice = (EditText) findViewById(R.id.priceFrom);
+        untilPrice = (EditText) findViewById(R.id.priceTo);
         searchButtonSearchFragment = (Button) findViewById(R.id.searchButtonSearchFragment);
 
         initListingCitySpinner();
         initListingStatusSpinner();
         initCurrencySpinner();
 
+
+
         city = (String) listingCity.getSelectedItem();
+
+        listingCity.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(Spinner parent, View view, int position, long id) {
+                city = (String) listingCity.getSelectedItem();
+                //Toast.makeText(SearchActivity.this, "pos: " + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+//        PropertyType = (String) listin.getSelectedItem();
+//
+//        listingCity.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(Spinner parent, View view, int position, long id) {
+//                city = (String) listingCity.getSelectedItem();
+//                //Toast.makeText(SearchActivity.this, "pos: " + position, Toast.LENGTH_SHORT).show();
+//            }
+//        });
+
+        Exchange = (String) currency.getSelectedItem();
+
+        currency.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(Spinner parent, View view, int position, long id) {
+                Exchange = (String) currency.getSelectedItem();
+                //Toast.makeText(SearchActivity.this, "pos: " + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         searchButtonSearchFragment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(SearchActivity.this, city, Toast.LENGTH_SHORT).show();
-                progressView.start();
-                searchListingRequest();
+
+
+
+                if(untilPrice.getText().toString().equals("") && fromPrice.getText().toString().equals("")){
+
+                    Toast.makeText(SearchActivity.this, "Both are empty", Toast.LENGTH_SHORT).show();
+
+                    untilPriceInt = -1; fromPriceInt=-1;
+
+                }else if(untilPrice.getText().toString().equals("")){
+                    untilPriceInt = -1;
+                    fromPriceInt = Integer.parseInt(fromPrice.getText().toString());
+                    Toast.makeText(SearchActivity.this, "priceTo is empty " + fromPriceInt, Toast.LENGTH_SHORT).show();
+
+                }else if(fromPrice.getText().toString().equals("")) {
+
+                    fromPriceInt = -1;
+                    untilPriceInt = Integer.parseInt(untilPrice.getText().toString());
+                    Toast.makeText(SearchActivity.this, "priceFrom is empty " + untilPriceInt, Toast.LENGTH_SHORT).show();
+                }else{
+                    //both fields are filled
+                    fromPriceInt = Integer.parseInt(fromPrice.getText().toString());
+                    untilPriceInt = Integer.parseInt(untilPrice.getText().toString());
+
+                    Toast.makeText(SearchActivity.this, fromPriceInt + " + " + untilPriceInt, Toast.LENGTH_SHORT).show();
+
+                }
+
+                switch (Exchange){
+                    case "₸": ExchangeId = 1; break;
+                    case "$": ExchangeId= 2; break;
+                    case "€": ExchangeId = 3; break;
+                    default: ExchangeId = 1; break;
+                }
+//                Toast.makeText(SearchActivity.this, ExchangeId + " Exchange", Toast.LENGTH_SHORT).show();
+
+
+
+                switch (city){
+                    case "Astana": cityId = 1; break;
+                    case "Almaty": cityId = 2; break;
+                    case "Karaganda": cityId = 3; break;
+                    case "Aktau": cityId = 4; break;
+                    case "Zhezkazgan": cityId = 5; break;
+                    default: cityId = -1; break;
+                }
+//                Toast.makeText(SearchActivity.this, cityId + "", Toast.LENGTH_SHORT).show();
+//                progressView.start();
+
+
+//                searchListingRequest(cityId);
             }
         });
     }
 
 
-    public void searchListingRequest() {
+    public void searchListingRequest(int cityId, int fromPriceSend, int untilPriceSend) {
 
-        String url = "http://altynorda.kz/SearchAPI/Index?CityId=1";
+        if(fromPriceSend != -1 && untilPriceSend !=-1){
+            url = "http://altynorda.kz/SearchAPI/Index?CityId=" + cityId +
+                    "?fromPrice" + fromPriceSend + "?untilPrice" + untilPriceSend;
+        }else if(fromPriceSend != -1){
+            url = "http://altynorda.kz/SearchAPI/Index?CityId=" + cityId + "?fromPrice" + fromPriceSend;
+        }else if (untilPriceSend != -1){
+            url = "http://altynorda.kz/SearchAPI/Index?CityId=" + cityId + "?untilPrice" + untilPriceSend;
+        }else{
+            url = "http://altynorda.kz/SearchAPI/Index?CityId=" + cityId;
+        }
+
+//        String url = "http://altynorda.kz/SearchAPI/Index?CityId=" + cityId;
 
         titles = new ArrayList<>();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
@@ -151,18 +252,18 @@ String title;
     }
 
 
-    //initialize currency spinner
-    public void initListingStatusSpinner() {
-        List<String> list = new ArrayList<String>();
-
-        list.add(getResources().getString(R.string.rent));
-        list.add(getResources().getString(R.string.sale));
-
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getApplicationContext(),
-                android.R.layout.simple_spinner_item, list);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        listingStatus.setAdapter(dataAdapter);
-    }
+//    //initialize currency spinner
+//    public void initListingStatusSpinner() {
+//        List<String> list = new ArrayList<String>();
+//
+//        list.add(getResources().getString(R.string.rent));
+//        list.add(getResources().getString(R.string.sale));
+//
+//        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getApplicationContext(),
+//                android.R.layout.simple_spinner_item, list);
+//        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        listingStatus.setAdapter(dataAdapter);
+//    }
 
     //initialize listing status spinner
     public void initCurrencySpinner() {
@@ -194,5 +295,54 @@ String title;
                 android.R.layout.simple_spinner_item, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         listingCity.setAdapter(dataAdapter);
+    }
+
+
+    //initialize listing type spinner
+    public void initListingStatusSpinner() {
+        listStatus = new ArrayList<String>();
+
+
+        String url = "http://altynorda.kz/api/ListingStatusesAPI/GetListingStatuses";
+
+        JsonArrayRequest listingStatusRequest = new JsonArrayRequest(Request.Method.GET,
+                url,
+                new JSONObject(),
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+
+                        for (int i = 0; i < response.length(); i++) {
+                            try {
+                                JSONObject jsonObject = response.getJSONObject(i);
+                                listStatus.add(i, jsonObject.getString("Name"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getApplicationContext(),
+                                    android.R.layout.simple_spinner_item, listStatus);
+                            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            listingStatus.setAdapter(dataAdapter);
+                        }
+
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+//                        NetworkResponse response = error.networkResponse;
+
+                        String errors = error.getMessage();
+                        Toast.makeText(getApplicationContext(), errors, Toast.LENGTH_LONG).show();
+
+                    }
+                });
+        AppController.getInstance().addToRequestQueue(listingStatusRequest);
+
+
+
+
     }
 }
