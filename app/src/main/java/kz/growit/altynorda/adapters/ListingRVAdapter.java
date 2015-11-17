@@ -27,13 +27,14 @@ import java.util.Iterator;
 
 import kz.growit.altynorda.InsideListingActivity;
 import kz.growit.altynorda.R;
+import kz.growit.altynorda.ReserveActivity;
 import kz.growit.altynorda.models.Listings;
 
 public class ListingRVAdapter extends RecyclerView.Adapter<ListingRVAdapter.ListingRVViewHolder> {
     private ArrayList<Listings> listings;
     private Activity activity;
     private Boolean isFavorite = false;
-
+    private Button openReserve;
     private ArrayList<Integer> favoritesId = new ArrayList<>();
 
     public ListingRVAdapter(ArrayList<Listings> listings, Activity activity) {
@@ -91,6 +92,13 @@ public class ListingRVAdapter extends RecyclerView.Adapter<ListingRVAdapter.List
 
 //        favoritesId.add(26);
 //        favoritesId.add(28);
+
+        holder.openReserve.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.getContext().startActivity(new Intent(v.getContext().getApplicationContext(), ReserveActivity.class));
+            }
+        });
 
 
         holder.favorite.setOnClickListener(new View.OnClickListener() {
@@ -151,12 +159,14 @@ public class ListingRVAdapter extends RecyclerView.Adapter<ListingRVAdapter.List
         private ImageButton favorite;
 //        EditText comment;
 //        Button sendComment;
+        private Button openReserve;
         private int Id;
 
         private LinearLayout linearLayoutCardLayout;
 
         public ListingRVViewHolder(View itemView) {
             super(itemView);
+            openReserve = (Button) itemView.findViewById(R.id.openReserve);
             description = (TextView) itemView.findViewById(R.id.description);
             thumb = (SliderLayout) itemView.findViewById(R.id.thumbnailImageViewListingRow);
             username = (TextView) itemView.findViewById(R.id.usernameTVListingRow);

@@ -254,6 +254,17 @@
             android:textSize="16dp" />
 
 
+
+        <com.rey.material.widget.Button
+            android:layout_marginTop="24dp"
+            android:id="@+id/openReserve"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Забронировать"/>
+
+
+
     </LinearLayout>
 
 

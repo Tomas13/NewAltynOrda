@@ -48,7 +48,7 @@ public class InsideListingActivity extends AppCompatActivity {
     JSONObject data;
 
     EditText comment;
-            Button sendComment;
+    Button sendComment;
     private int Id;
     private ArrayList<Listings> listings = new ArrayList<>();
     private ProgressView progressView;
@@ -57,6 +57,7 @@ public class InsideListingActivity extends AppCompatActivity {
     int intentData;
 
     private RecyclerView recyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,29 +75,28 @@ public class InsideListingActivity extends AppCompatActivity {
 
         Toast.makeText(getApplicationContext(), intentData + "", Toast.LENGTH_LONG).show();
         SharedPreferences loginPrefs = getSharedPreferences("LoginPrefs", MainActivity.MODE_PRIVATE);
-        final String token =  loginPrefs.getString("Token", "");
+        final String token = loginPrefs.getString("Token", "");
 
         refreshList();
 
 
         comment = (EditText) findViewById(R.id.comment);
-            sendComment = (Button) findViewById(R.id.sendComment);
-            sendComment.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        sendComment = (Button) findViewById(R.id.sendComment);
+        sendComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 //                    Toast.makeText(v.getContext(), intentData + "", Toast.LENGTH_SHORT).show();
-                    progressView.start();
-                    postComment(comment.getText().toString(), intentData, token);
-                }
-            });
+                progressView.start();
+                postComment(comment.getText().toString(), intentData, token);
+            }
+        });
 
 
-        
 //        Toast.makeText(InsideListingActivity.this, intentData, Toast.LENGTH_SHORT).show();
     }
 
 
-    private void postComment(String comment, int id, String token ) {
+    private void postComment(String comment, int id, String token) {
 
         data = new JSONObject();
 
@@ -133,7 +133,7 @@ public class InsideListingActivity extends AppCompatActivity {
                                 Snackbar.make(findViewById(R.id.relativeLayout), "Комментарий отправлен", Snackbar.LENGTH_LONG).show();
 //                                Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_LONG).show();
                                 progressView.stop();
-                            }else{
+                            } else {
                                 Snackbar.make(findViewById(R.id.relativeLayout), "Ошибка. Комментарий не отправлен", Snackbar.LENGTH_LONG).show();
                                 progressView.stop();
 //                                if(!response.getString("errors").isEmpty()){
@@ -158,6 +158,7 @@ public class InsideListingActivity extends AppCompatActivity {
                 });
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
     }
+
     private ArrayList<Listings> myListings;
 
     public ArrayList<Listings> getMyListings() {
@@ -175,7 +176,7 @@ public class InsideListingActivity extends AppCompatActivity {
 
 //        Id = 30; //need to change according to spinner selection
 
-        String url = "http://altynorda.kz/api/ListingsAPI/GetListing?id=" + Id ;
+        String url = "http://altynorda.kz/ListingsAPI/GetListing?id=" + Id;
         JsonObjectRequest getListingsByCityReq = new JsonObjectRequest(
                 Request.Method.GET,
                 url,
@@ -183,8 +184,8 @@ public class InsideListingActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                                Listings listing = new Listings(response);
-                                listings.add(listing);
+                        Listings listing = new Listings(response);
+                        listings.add(listing);
 
                         setMyListings(listings);
 
@@ -194,8 +195,9 @@ public class InsideListingActivity extends AppCompatActivity {
                         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                             recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 1));
                         } else {
-                            recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
+                            recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 1));
                         }
+
 
                         recyclerView.setHasFixedSize(true);
                         recyclerView.setAdapter(myAdapter);
