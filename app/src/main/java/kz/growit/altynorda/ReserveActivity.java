@@ -49,6 +49,12 @@ public class ReserveActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reserve);
 
+
+        Bundle intentData = getIntent().getExtras();
+        final int listingId = intentData.getInt("ListingIdFromListingRVAdapter");
+        Toast.makeText(ReserveActivity.this, "" + listingId, Toast.LENGTH_SHORT).show();
+
+
         NumberOfPeople = (EditText) findViewById(R.id.NumberOfPeople);
 
 
@@ -106,20 +112,20 @@ public class ReserveActivity extends AppCompatActivity {
                 } else {
                     numberPeopleForReserve = Integer.parseInt(NumberOfPeople.getText().toString());
                     progressView.start();
-                    postReserveRequest(FromReserveString, UntilReserveString, numberPeopleForReserve);
+                    postReserveRequest(FromReserveString, UntilReserveString, numberPeopleForReserve, listingId);
                 }
             }
         });
     }
 
 
-    private void postReserveRequest(String fromReserve, String untilReserve, int NumberOfPeople) {
+    private void postReserveRequest(String fromReserve, String untilReserve, int NumberOfPeople, int listingId) {
         String url = "http://altynorda.kz/ReservesAPI/RequestForReserve";
 
 
         request = new JSONObject();
         try {
-            request.put("ListingId", 31);   //нужно бандлом передавать из предыдущего активити
+            request.put("ListingId", listingId); //listingId   //нужно бандлом передавать из предыдущего активити
             request.put("FromReserve", fromReserve); //"18.11.2015");
             request.put("UntilReserve", untilReserve); //"19.11.2015");
             request.put("NumberPeopleForReserve", NumberOfPeople);

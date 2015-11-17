@@ -59,6 +59,8 @@ String title;
     ArrayList<String> countries;
     ArrayAdapter<String> adapter;
 
+    String Status;
+    int StatusId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +115,16 @@ String title;
         });
 
 
+        Status = (String) listingStatus.getSelectedItem();
+
+        listingStatus.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(Spinner parent, View view, int position, long id) {
+                Status = (String) listingStatus.getSelectedItem();
+//                Toast.makeText(SearchActivity.this, "Status: " + Status, Toast.LENGTH_SHORT).show();
+            }
+        });
+
         searchButtonSearchFragment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,6 +156,13 @@ String title;
 
                 }
 
+
+                switch (Status){
+                    case "Аренда": StatusId = 1; break;
+                    case "Продажа": StatusId= 2; break;
+                    default: ExchangeId = 1; break;
+                }
+
                 switch (Exchange){
                     case "₸": ExchangeId = 1; break;
                     case "$": ExchangeId= 2; break;
@@ -166,23 +185,25 @@ String title;
 //                progressView.start();
 
 
-//                searchListingRequest(cityId);
+                searchListingRequest(cityId, fromPriceInt, untilPriceInt, ExchangeId, StatusId);
             }
         });
     }
 
 
-    public void searchListingRequest(int cityId, int fromPriceSend, int untilPriceSend) {
+    public void searchListingRequest(int cityId, int fromPriceSend, int untilPriceSend, int exchangeId, int StatusId) {
 
         if(fromPriceSend != -1 && untilPriceSend !=-1){
-            url = "http://altynorda.kz/SearchAPI/Index?CityId=" + cityId +
-                    "?fromPrice" + fromPriceSend + "?untilPrice" + untilPriceSend;
+            url = "http://altynorda.kz/SearchAPI/Index?CityId=" + cityId + "&ExhangeId=" + exchangeId +
+                    "&fromPrice=" + fromPriceSend + "&untilPrice=" + untilPriceSend + "&ListingStatusId=" + StatusId;
         }else if(fromPriceSend != -1){
-            url = "http://altynorda.kz/SearchAPI/Index?CityId=" + cityId + "?fromPrice" + fromPriceSend;
+            url = "http://altynorda.kz/SearchAPI/Index?CityId=" + cityId + "&ExchangeId=" + exchangeId +
+                    "&fromPrice=" + fromPriceSend + "&ListingStatusId=" + StatusId;
         }else if (untilPriceSend != -1){
-            url = "http://altynorda.kz/SearchAPI/Index?CityId=" + cityId + "?untilPrice" + untilPriceSend;
+            url = "http://altynorda.kz/SearchAPI/Index?CityId=" + cityId + "&ExchangeId=" + exchangeId +
+                    "&untilPrice=" + untilPriceSend + "&ListingStatusId=" + StatusId;
         }else{
-            url = "http://altynorda.kz/SearchAPI/Index?CityId=" + cityId;
+            url = "http://altynorda.kz/SearchAPI/Index?CityId=" + cityId + "&ListingStatusId=" + StatusId;
         }
 
 //        String url = "http://altynorda.kz/SearchAPI/Index?CityId=" + cityId;
