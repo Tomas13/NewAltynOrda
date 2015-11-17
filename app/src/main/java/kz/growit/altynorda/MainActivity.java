@@ -15,11 +15,8 @@ import android.widget.ArrayAdapter;
 import android.support.design.widget.TabLayout;
 import android.widget.Toast;
 
-import com.rey.material.app.DatePickerDialog;
-import com.rey.material.app.Dialog;
-import com.rey.material.app.DialogFragment;
-import com.rey.material.app.SimpleDialog;
-import com.rey.material.app.ThemeManager;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.Spinner;
 
@@ -32,11 +29,10 @@ import kz.growit.altynorda.adapters.ListingsPagerAdapter;
 public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private Spinner spinner;
-
+    MaterialDialog.Builder builder;
     private Button FiltersButton;
     private Boolean isLoggedIn = false;
 
-    private Dialog.Builder builder = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +44,6 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences main = getSharedPreferences(BaseActivity.APP_PREFERENCES, MODE_PRIVATE);
 
-//        mDialog
-//                .title("Dialog title")
-//                .positiveAction("OK")
-//                .negativeAction("CANCEL")
-//                .cancelable(true)
-//
-//        .show();
 
         FiltersButton = (Button) findViewById(R.id.FiltersButton);
         FiltersButton.setOnClickListener(new View.OnClickListener() {
@@ -69,14 +58,14 @@ public class MainActivity extends AppCompatActivity {
 
         //just cheking for token. Need to DELETE this two lines
         SharedPreferences loginPrefs = getSharedPreferences("LoginPrefs", MainActivity.MODE_PRIVATE);
-//        Toast.makeText(getApplicationContext(), loginPrefs.getString("Token", "not logged in"), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), loginPrefs.getString("Token", "not logged in"), Toast.LENGTH_SHORT).show();
 
 
         String token = loginPrefs.getString("Token", "not logged in");
-        if(token!="not logged in"){
+        if (token != "not logged in") {
             isLoggedIn = true;
             Toast.makeText(MainActivity.this, "Logged in", Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
             isLoggedIn = false;
             Toast.makeText(MainActivity.this, "Not logged in", Toast.LENGTH_SHORT).show();
         }
@@ -129,40 +118,45 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        builder = new MaterialDialog.Builder(this)
+                .title("Добавление недвижимости")
+                .content("Чтобы добавить недвижимость " +
+                        "вы должны быть зарегистрированы. Желаете перейти на" +
+                        "страницу регистрации")
+                .positiveText("Перейти")
+                .negativeText("Закрыть")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(MaterialDialog dialog, DialogAction which) {
+//                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                        startActivity(new Intent(MainActivity.this, AddPropertyActivity.class));
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(MaterialDialog dialog, DialogAction which) {
+                        dialog.dismiss();
+                    }
+                });
+
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if(isLoggedIn){
 
-                boolean isLightTheme = ThemeManager.getInstance().getCurrentTheme() == 0;
+                if (isLoggedIn) {
 
-                builder = new DatePickerDialog.Builder(isLightTheme ?
-                        R.style.Material_App_Dialog_DatePicker_Light : R.style.Material_App_Dialog_DatePicker) {
-                    @Override
-                    public void onPositiveActionClicked(com.rey.material.app.DialogFragment fragment) {
-                        DatePickerDialog dialog = (DatePickerDialog) fragment.getDialog();
-                        String date = dialog.getFormattedDate(SimpleDateFormat.getDateInstance());
-                        Toast.makeText(getApplicationContext(), "Date is " + date, Toast.LENGTH_SHORT).show();
-                        super.onPositiveActionClicked(fragment);
-                    }
-
-                    @Override
-                    public void onNegativeActionClicked(com.rey.material.app.DialogFragment fragment) {
-                        Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_SHORT).show();
-                        super.onNegativeActionClicked(fragment);
-                    }
-                };
-
-                builder.positiveAction("OK")
-                        .negativeAction("CANCEL");
-
-
-
-//                    Toast.makeText(MainActivity.this, "", Toast.LENGTH_SHORT).show();
+                    MaterialDialog dialog = builder.build();
+                    dialog.show();
+                } else {
+                    view.getContext().startActivity(new Intent(MainActivity.this, AddPropertyActivity.class));
                 }
-//                view.getContext().startActivity(new Intent(MainActivity.this, AddPropertyActivity.class));
+//                    Toast.makeText(MainActivity.this, "", Toast.LENGTH_SHORT).show();
+
 //            }
+
+            }
         });
     }
 

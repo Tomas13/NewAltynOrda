@@ -59,7 +59,8 @@
             android:background="@color/primary"
             android:text="Отпр."
             android:textColor="#fff"
-            app:rd_enable="true" />
+            app:rd_enable="true"
+            app:rd_style="@style/Material.Drawable.Ripple.Wave"/>
         <!--android:background="@drawable/button_send"-->
     </RelativeLayout>
 

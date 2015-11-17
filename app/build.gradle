@@ -9,6 +9,10 @@ repositories {
     maven { url "https://jitpack.io" }
 }
 
+//repositories {
+//    maven { url "https://jitpack.io" }
+//}
+
 
 android {
     compileSdkVersion 23
@@ -70,9 +74,10 @@ dependencies {
     compile 'com.flaviofaria:kenburnsview:1.0.6'
 
 
-    compile('com.github.afollestad.material-dialogs:core:0.8.5.1@aar') {
-        transitive = true
-    }
+//    compile('com.github.afollestad.material-dialogs:core:0.8.5.1@aar') {
+//        transitive = true
+//    }
 
+    compile 'com.github.afollestad.material-dialogs:core:0.8.5.1@aar'
 
 }
