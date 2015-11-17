@@ -25,10 +25,12 @@ public class AddPropertyActivity extends AppCompatActivity {
             Floor, TotalFloors, TotalArea, KitchenArea, CityId,
             PropertyTypeId, ListingStatusId;
 
-    private EditText TitleEdit, PriceEdit, AddressEdit, DescriptionEdit,
+    private EditText PriceEdit, AddressEdit, DescriptionEdit,
             ConstructionYearEdit, RoomCountEdit, CeilingHeightEdit, FloorEdit,
             TotalFloorsEdit, TotalAreaEdit, KitchenAreaEdit, CityIdEdit, PropertyTypeIdEdit,
             ListingStatusIdEdit;
+
+    private com.rey.material.widget.EditText TitleEdit;
 
     private Button SendProperty;
     private ProgressView progressView;
@@ -42,7 +44,7 @@ public class AddPropertyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_property);
 
-        TitleEdit = (EditText) findViewById(R.id.Title);
+        TitleEdit = (com.rey.material.widget.EditText) findViewById(R.id.Title);
         PriceEdit = (EditText) findViewById(R.id.Price);
         AddressEdit = (EditText) findViewById(R.id.Address);
         DescriptionEdit = (EditText) findViewById(R.id.Description);

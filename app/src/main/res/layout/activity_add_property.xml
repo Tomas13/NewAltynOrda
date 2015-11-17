@@ -55,15 +55,22 @@
                     android:layout_height="wrap_content"
                     android:text="Основная информация" />
 
-                <EditText
 
+                <com.rey.material.widget.EditText
                     android:id="@+id/Title"
+
+                    style="@style/Material.Widget.EditText.Light"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:hint="Заглавие"
+                    android:textSize="20dp"
                     android:inputType="textCapWords"
-                    android:maxLength="255"
-                    android:singleLine="true" />
+                    android:maxLength="5"
+                    android:singleLine="true"
+                    app:et_error="error"
+                    app:et_helper="helper"
+                    app:et_supportMaxChars="4"
+                    app:et_supportMode="charCounter" />
 
                 <EditText
                     android:id="@+id/Price"
