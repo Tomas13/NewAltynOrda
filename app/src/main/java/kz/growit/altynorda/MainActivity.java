@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kz.growit.altynorda.adapters.ListingsPagerAdapter;
+import kz.growit.altynorda.models.Cities;
 
 public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private Button FiltersButton;
     private Boolean isLoggedIn = false;
 
+    ArrayList<Cities> citiesArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,6 +141,16 @@ public class MainActivity extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 });
+
+
+        citiesArrayList = new ArrayList<>();
+        spinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(Spinner parent, View view, int position, long id) {
+//                citiesArrayList.get(position)
+                Toast.makeText(MainActivity.this, "Надо доделать еще здесь;)", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

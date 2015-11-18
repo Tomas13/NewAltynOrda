@@ -10,10 +10,10 @@ import java.util.ArrayList;
  * Created by Талгат on 14.10.2015.
  */
 public class Listings {
-    private int Id, AgencyId, AgentId, CityId, ExchangeId, PropertyTypeId,
+    private int Id, AgencyId, AgentId, CityId,  ExchangeId, PropertyTypeId,
             Floor, TotalFloors, RoomCount, RentTypeId, BedCount,
             WallMaterialId, ConditionId, ListingStatusId;
-    private String Title, Address, Price, Description, Username,
+    private String Title, Address, Price, Description, Username, UserId,
             Latitude, Longitude, TotalArea, KitchenArea, ConstructionYear, CeilingHeight,
             MaxNumberPeopleForReservation;
     private boolean IsZalog, IsDorm, IsMicrowave, IsSmokingAllowed, IsPool, IsToaster, IsCoffeePot,
@@ -38,6 +38,7 @@ public class Listings {
 
 
 
+            this.UserId = resp.getString("UserId");
             this.Id = resp.getInt("Id");
 //            this.AgencyId = resp.getInt("AgencyId");
 //            this.AgentId = resp.getInt("AgentId");
@@ -66,6 +67,15 @@ public class Listings {
             this.CeilingHeight = resp.getString("CeilingHeight");
             this.MaxNumberPeopleForReservation = resp.getString("MaxNumberPeopleForReservation");
 
+
+            JSONArray comments = resp.getJSONArray("allComments");
+
+            if (comments.length() != 0) {
+                for (int i = 0; i < comments.length(); i++) {
+                    Comments item = new Comments(comments.getJSONObject(i));
+                    allComments.add(item);
+                }
+            }
             this.PendingDate = resp.getString("PendingDate");
             this.ApprovedDate = resp.getString("ApprovedDate");
             this.RejectedDate = resp.getString("RejectedDate");
@@ -124,13 +134,7 @@ public class Listings {
 //            this.Approved = resp.getBoolean("Approved");
 //            this.Rejected = resp.getBoolean("Rejected");
 
-            JSONArray comments = resp.getJSONArray("allComments");
-            if (comments.length() != 0) {
-                for (int i = 0; i < comments.length(); i++) {
-                    Comments item = new Comments(comments.getJSONObject(i));
-                    allComments.add(item);
-                }
-            }
+
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -212,6 +216,8 @@ public class Listings {
     public String getUsername() {
         return Username;
     }
+
+    public String getUserId() {return UserId;}
 
     public String getLatitude() {
         return Latitude;

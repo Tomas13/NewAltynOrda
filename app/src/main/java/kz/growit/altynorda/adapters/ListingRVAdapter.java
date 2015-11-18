@@ -7,6 +7,7 @@ package kz.growit.altynorda.adapters;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
@@ -19,16 +20,26 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.rey.material.widget.Button;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import kz.growit.altynorda.AppController;
 import kz.growit.altynorda.InsideListingActivity;
 import kz.growit.altynorda.R;
 import kz.growit.altynorda.ReserveActivity;
+import kz.growit.altynorda.ResultsActivity;
 import kz.growit.altynorda.models.Listings;
 
 public class ListingRVAdapter extends RecyclerView.Adapter<ListingRVAdapter.ListingRVViewHolder> {
@@ -37,6 +48,8 @@ public class ListingRVAdapter extends RecyclerView.Adapter<ListingRVAdapter.List
     private Boolean isFavorite = false;
     private Button openReserve;
     private ArrayList<Integer> favoritesId = new ArrayList<>();
+
+    private String userFullName = "Hello";
 
     public ListingRVAdapter(ArrayList<Listings> listings, Activity activity) {
         this.activity = activity;
@@ -53,6 +66,49 @@ public class ListingRVAdapter extends RecyclerView.Adapter<ListingRVAdapter.List
         return new ListingRVViewHolder(itemView);
     }
 
+    public void searchListingRequest(String holderId) {
+
+
+        String url = "http://altynorda.kz/UserProfilesApi/GetUserProfile?userId=" + holderId;
+
+//        titles = new ArrayList<>();
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                url,
+                new JSONObject(),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+
+                            if (!response.getString("Firstname").isEmpty() || !response.getString("Lastname").isEmpty()) {
+                                userFullName = response.getString("FirstName") + response.getString("Lastname");
+                            }
+                            else {
+                                userFullName = "Пользователь";
+
+                            }
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+
+                    }
+                });
+        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+
+
+    }
+
+
+
     @Override
     public void onBindViewHolder(final ListingRVViewHolder holder, int position) {
         Listings item = listings.get(position);
@@ -64,6 +120,9 @@ public class ListingRVAdapter extends RecyclerView.Adapter<ListingRVAdapter.List
 //        holder.RoomCount.setText(item.getRoomCount());
         holder.Price.setText(item.getPrice());
 
+
+
+        searchListingRequest(item.getUserId());
 
         holder.Id = item.getId();
         holder.thumb.removeAllSliders();
@@ -78,7 +137,18 @@ public class ListingRVAdapter extends RecyclerView.Adapter<ListingRVAdapter.List
 
 //        holder.commentsListingFull
         for (int i = 0; i < item.getAllComments().size(); i++) {
-                holder.commentsListingFull.setText(item.getAllComments().get(i).getText().toString());
+            //textViewAuthor
+            holder.commentsListingFull.setTextSize(25);
+            holder.commentsListingFull.setTextColor(Color.BLACK);
+//            searchListingRequest(item.getUserId());
+//            holder.commentsListingFull.append(userFullName);
+            holder.commentsListingFull.append(item.getAllComments().get(i).getUserId().toString());
+            holder.commentsListingFull.append(System.getProperty("line.separator"));
+            holder.commentsListingFull.setTextSize(18);
+//            holder.commentsListingFull.setTextColor(Color.GRAY);
+            holder.commentsListingFull.append(item.getAllComments().get(i).getText().toString());
+            holder.commentsListingFull.append(System.getProperty("line.separator"));
+            holder.commentsListingFull.append(System.getProperty("line.separator"));
 
 
         }
@@ -150,7 +220,6 @@ public class ListingRVAdapter extends RecyclerView.Adapter<ListingRVAdapter.List
                 }
 
 
-
             }
         });
 
@@ -164,10 +233,11 @@ public class ListingRVAdapter extends RecyclerView.Adapter<ListingRVAdapter.List
     }
 
     public static class ListingRVViewHolder extends RecyclerView.ViewHolder {
-        private TextView username, address, description, totalArea, RoomCount, commentsListingFull, Price;
+        private TextView username, address, description, totalArea, RoomCount, commentsListingFull,
+                Price;
         private SliderLayout thumb;
         private ImageButton favorite;
-//        EditText comment;
+        //        EditText comment;
 //        Button sendComment;
         private Button openReserve;
         private int Id;
@@ -176,6 +246,7 @@ public class ListingRVAdapter extends RecyclerView.Adapter<ListingRVAdapter.List
 
         public ListingRVViewHolder(View itemView) {
             super(itemView);
+
             commentsListingFull = (TextView) itemView.findViewById(R.id.commentsListingFull);
             openReserve = (Button) itemView.findViewById(R.id.openReserve);
             description = (TextView) itemView.findViewById(R.id.description);

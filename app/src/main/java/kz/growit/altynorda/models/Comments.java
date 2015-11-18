@@ -8,7 +8,7 @@ import org.json.JSONObject;
  */
 public class Comments {
     private int Id, ListingId;
-    private String Text, Username, PendingDate, ApprovedDate, RejectedDate, LastUpdate, CreatedDate;
+    private String Text, Username, UserId, PendingDate, ApprovedDate, RejectedDate, LastUpdate, CreatedDate;
 
 //            Enabled: true,
 //            Pending: false,
@@ -23,6 +23,7 @@ public class Comments {
             this.ListingId = resp.getInt("ListingId");
 
             this.Text = resp.getString("Text");
+            this.UserId = resp.getString("UserId");
             this.Username = resp.getString("Username");
             this.PendingDate = resp.getString("PendingDate");
             this.ApprovedDate = resp.getString("ApprovedDate");
@@ -45,6 +46,8 @@ public class Comments {
     public String getText() {
         return Text;
     }
+
+    public String getUserId() {return UserId;}
 
     public String getUsername() {
         return Username;

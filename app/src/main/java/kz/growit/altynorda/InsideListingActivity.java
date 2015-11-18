@@ -84,7 +84,7 @@ public class InsideListingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tel:" + callNumber));//"tel:0123456789"));
+                intent.setData(Uri.parse("tel:+" + callNumber));//"tel:0123456789"));
                 startActivity(intent);
             }
         });
@@ -210,7 +210,7 @@ public class InsideListingActivity extends AppCompatActivity {
 
                         setMyListings(listings);
 
-                        Toast.makeText(InsideListingActivity.this, "" + listings, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(InsideListingActivity.this, "" + getMyListings().get(0).getAllComments(), Toast.LENGTH_SHORT).show();
                         ListingRVAdapter myAdapter = new ListingRVAdapter(getMyListings(), InsideListingActivity.this);
 
                         //set number of columns depending on orientation

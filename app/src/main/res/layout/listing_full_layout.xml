@@ -218,7 +218,7 @@
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="desc"
+            android:text=""
             android:textSize="16dp" />
 
         <TextView
@@ -233,7 +233,7 @@
             android:id="@+id/equipment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="desc"
+            android:text=""
             android:textSize="16dp" />
 
 
@@ -250,7 +250,7 @@
             android:id="@+id/infrastructure"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="desc"
+            android:text=""
             android:textSize="16dp" />
 
 
@@ -272,12 +272,23 @@
             android:text="Комментарии"
             android:textSize="32dp" />
 
+
+
+        <!--<TextView-->
+            <!--android:id="@+id/commentsAuthorListingFull"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text=""-->
+            <!--android:textColor="#fff"-->
+            <!--android:textSize="20dp" />-->
+
+
         <TextView
             android:id="@+id/commentsListingFull"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="desc"
-            android:textSize="16dp" />
+            android:text=""
+            android:textSize="18dp" />
 
 
 
