@@ -76,7 +76,12 @@ public class ListingRVAdapter extends RecyclerView.Adapter<ListingRVAdapter.List
         }
 
 
+//        holder.commentsListingFull
+        for (int i = 0; i < item.getAllComments().size(); i++) {
+                holder.commentsListingFull.setText(item.getAllComments().get(i).getText().toString());
 
+
+        }
 
         holder.linearLayoutCardLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,7 +164,7 @@ public class ListingRVAdapter extends RecyclerView.Adapter<ListingRVAdapter.List
     }
 
     public static class ListingRVViewHolder extends RecyclerView.ViewHolder {
-        private TextView username, address, description, totalArea, RoomCount, Price;
+        private TextView username, address, description, totalArea, RoomCount, commentsListingFull, Price;
         private SliderLayout thumb;
         private ImageButton favorite;
 //        EditText comment;
@@ -171,6 +176,7 @@ public class ListingRVAdapter extends RecyclerView.Adapter<ListingRVAdapter.List
 
         public ListingRVViewHolder(View itemView) {
             super(itemView);
+            commentsListingFull = (TextView) itemView.findViewById(R.id.commentsListingFull);
             openReserve = (Button) itemView.findViewById(R.id.openReserve);
             description = (TextView) itemView.findViewById(R.id.description);
             thumb = (SliderLayout) itemView.findViewById(R.id.thumbnailImageViewListingRow);

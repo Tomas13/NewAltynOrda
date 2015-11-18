@@ -76,6 +76,12 @@ public class AppController extends Application {
                 .addProfiles(
                         new ProfileDrawerItem().withName("Mike Penz").withEmail("mikepenz@gmail.com").withIcon(getResources().getDrawable(R.drawable.profile_img))
 
+                        , new ProfileSettingDrawerItem()
+                                .withName("Поменять пароль")
+                                .withIdentifier(22)
+
+                                .withIcon(FontAwesome.Icon.faw_eye)
+
                         //don't ask but google uses 14dp for the add account icon in gmail but 20dp for the normal icons (like manage account)
                         , new ProfileSettingDrawerItem().withName("Add Account").withDescription("Add new GitHub Account")
                                 .withIcon(new IconicsDrawable(this, FontAwesome.Icon.faw_upload)
@@ -85,6 +91,7 @@ public class AppController extends Application {
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
                     public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
+
                         return false;
                     }
                 })
@@ -97,7 +104,7 @@ public class AppController extends Application {
                 .withHeader(R.layout.drawer_header)
                 .addDrawerItems(
                         new PrimaryDrawerItem()
-                                .withName("Поиск")
+                                .withName("Главная")
                                 .withIcon(FontAwesome.Icon.faw_home)
                                 .withIdentifier(1)
                                 .withBadge("99"),
@@ -105,22 +112,22 @@ public class AppController extends Application {
                                 .withName(R.string.drawer_item_agents_agent)
                                 .withIdentifier(2)
 
-                                .withIcon(FontAwesome.Icon.faw_gamepad),
+                                .withIcon(FontAwesome.Icon.faw_bank),
                         new PrimaryDrawerItem()
                                 .withName("Избранное")
                                 .withIdentifier(3)
 
-                                .withIcon(FontAwesome.Icon.faw_eye)
+                                .withIcon(FontAwesome.Icon.faw_heart)
                                 .withBadge("6"),
 
                         new PrimaryDrawerItem()
                                 .withName("Лента новостей")
                                 .withIdentifier(3)
 
-                                .withIcon(FontAwesome.Icon.faw_eye),
+                                .withIcon(FontAwesome.Icon.faw_hacker_news),
                         new PrimaryDrawerItem()
-                                .withName("Сообщения")
-                                .withIdentifier(4)
+                                .withName("Поменять пароль")
+                                .withIdentifier(22)
 
                                 .withIcon(FontAwesome.Icon.faw_eye),
 
@@ -129,7 +136,7 @@ public class AppController extends Application {
 
                                 .withName(R.string.drawer_item_settings),
                         new SecondaryDrawerItem()
-                                .withName("Помощь")
+                                .withName("Настройки")
                                 .withIdentifier(5)
 
                                 .withIcon(FontAwesome.Icon.faw_cog),
@@ -168,6 +175,9 @@ public class AppController extends Application {
                                 activity.startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                                 return false;
 
+                            case 22:
+                                activity.startActivity(new Intent(getApplicationContext(), ChangePasswordActivity.class));
+                                return false;
                             default:
                                 return false;
                         }

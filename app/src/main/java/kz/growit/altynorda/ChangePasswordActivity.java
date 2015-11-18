@@ -1,6 +1,8 @@
 package kz.growit.altynorda;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,7 +25,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ChangePasswordActivity extends AppCompatActivity {
+public class ChangePasswordActivity extends Activity {
     private ProgressView progressView;
     private EditText OldPassword;
     private EditText ConfirmNewPassword;
@@ -32,6 +34,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private Button btnChangePassword;
     private EditText UserNameChangePassword;
     private JSONObject data;
+    private String token;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,13 +51,19 @@ public class ChangePasswordActivity extends AppCompatActivity {
         btnChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences loginPrefs = getSharedPreferences("LoginPrefs", MainActivity.MODE_PRIVATE);
+                token = loginPrefs.getString("Token", "");
 
                 String userName = UserNameChangePassword.getText().toString().trim();
                 String oldPassword = OldPassword.getText().toString().trim();
                 String newPassword = NewPassword.getText().toString().trim();
                 String confirmNewPassword = ConfirmNewPassword.getText().toString().trim();
 
-                changePasswordRequest(oldPassword, newPassword, userName, confirmNewPassword);
+                if (userName.isEmpty()){
+                    Toast.makeText(ChangePasswordActivity.this, "Заполните поле Логин", Toast.LENGTH_SHORT).show();
+                }else{
+                    changePasswordRequest(oldPassword, newPassword, userName, confirmNewPassword);
+                }
             }
         });
     }
@@ -67,7 +77,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
             data.put("OldPassword", OldPassword);
             data.put("NewPassword", NewPassword);
             data.put("ConfirmPassword", confirmNewPassword);
-            data.put("Token", "a2aec220-de97-459e-828a-9ec18d490d6a");
+            data.put("Token", token);//"a2aec220-de97-459e-828a-9ec18d490d6a");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -86,10 +96,14 @@ public class ChangePasswordActivity extends AppCompatActivity {
 //                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
 //                        }
                         try {
-                            if (response.get("success").equals("true")) {
-                                startActivity(new Intent(ChangePasswordActivity.this, PhoneConfirmationActivity.class));
+                            if (response.getBoolean("success")) {
 
-                                Toast.makeText(getApplicationContext(), "server response is : " + response, Toast.LENGTH_LONG).show();
+//                                Toast.makeText(getApplicationContext(), "server response is : " + response, Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Ваш пароль успешно изменен", Toast.LENGTH_LONG).show();
+                                startActivity(new Intent(ChangePasswordActivity.this, LoginActivity.class));
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), "server response is : " + response.getString("errors"), Toast.LENGTH_LONG).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

@@ -1,5 +1,6 @@
 package kz.growit.altynorda;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,7 +23,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ForgotPasswordActivity extends AppCompatActivity {
+public class ForgotPasswordActivity extends Activity {
     private ProgressView progressView;
     private EditText phoneForgotPassword;
     private Button btnSendPhoneForgotPassword;

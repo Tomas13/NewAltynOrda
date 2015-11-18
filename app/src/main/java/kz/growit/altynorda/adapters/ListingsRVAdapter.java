@@ -52,7 +52,7 @@ public class ListingsRVAdapter extends RecyclerView.Adapter<ListingsRVAdapter.Li
 
     @Override
     public void onBindViewHolder(final ListingsRVViewHolder holder, int position) {
-        Listings item = listings.get(position);
+        final Listings item = listings.get(position);
         holder.username.setText(item.getUsername());
         holder.username.setTextColor(activity.getResources().getColor(R.color.colorAccent));
         holder.address.setText(item.getAddress());
@@ -64,6 +64,7 @@ public class ListingsRVAdapter extends RecyclerView.Adapter<ListingsRVAdapter.Li
             public void onClick(View v) {
                 Intent goToInside = new Intent(v.getContext(), InsideListingActivity.class);
                 goToInside.putExtra("index", holder.Id);
+                goToInside.putExtra("callNumber", item.getUsername());
                 v.getContext().startActivity(goToInside);
             }
         });

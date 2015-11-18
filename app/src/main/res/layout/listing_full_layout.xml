@@ -110,7 +110,7 @@
                         android:layout_height="wrap_content"
                         android:text="Площадь"
                         android:textColor="#fff"
-                        android:textSize="14sp"
+                        android:textSize="13sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -262,6 +262,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Забронировать"/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="start"
+            android:text="Комментарии"
+            android:textSize="32dp" />
+
+        <TextView
+            android:id="@+id/commentsListingFull"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="desc"
+            android:textSize="16dp" />
 
 
 

@@ -76,7 +76,7 @@ public class FavoritesActivity extends AppCompatActivity {
             return;
         }
 
-        String url = "http://altynorda.kz/api/ListingsAPI/GetListing?id=" + id ;
+        String url = "http://altynorda.kz/ListingsAPI/GetListing?id=" + id ;
         JsonObjectRequest getListingsById = new JsonObjectRequest(
                 Request.Method.GET,
                 url,

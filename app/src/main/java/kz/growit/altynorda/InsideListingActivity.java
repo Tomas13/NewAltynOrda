@@ -3,6 +3,8 @@ package kz.growit.altynorda;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.net.Uri;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -45,16 +47,19 @@ public class InsideListingActivity extends AppCompatActivity {
     private SliderLayout thumb;
     private ImageButton favorite;
 
-    JSONObject data;
+    private JSONObject data;
 
-    EditText comment;
-    Button sendComment;
+    private EditText comment;
+    private Button sendComment;
     private int Id;
     private ArrayList<Listings> listings = new ArrayList<>();
     private ProgressView progressView;
     private int CityId;
-    JSONObject commentObject;
-    int intentData;
+    private JSONObject commentObject;
+    private int intentData;
+    private String callNumber;
+    private String token;
+    private FloatingActionButton fabResultsCall;
 
     private RecyclerView recyclerView;
 
@@ -64,9 +69,25 @@ public class InsideListingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_inside_listing);
 
 
-        intentData = getIntent().getIntExtra("index", 26);
+
+
+        intentData = getIntent().getIntExtra("index", -1); //getting intent data, -1 is default
+        callNumber = getIntent().getStringExtra("callNumber");//, -1);
+
+//        Toast.makeText(InsideListingActivity.this, callNumber, Toast.LENGTH_SHORT).show();
 
         Id = intentData;
+
+
+        fabResultsCall = (FloatingActionButton) findViewById(R.id.fabResultsCall);
+        fabResultsCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:" + callNumber));//"tel:0123456789"));
+                startActivity(intent);
+            }
+        });
 
         recyclerView = (RecyclerView) findViewById(R.id.activityInsideRV);
 
@@ -75,7 +96,7 @@ public class InsideListingActivity extends AppCompatActivity {
 
         Toast.makeText(getApplicationContext(), intentData + "", Toast.LENGTH_LONG).show();
         SharedPreferences loginPrefs = getSharedPreferences("LoginPrefs", MainActivity.MODE_PRIVATE);
-        final String token = loginPrefs.getString("Token", "");
+        token = loginPrefs.getString("Token", "");
 
         refreshList();
 
@@ -113,7 +134,7 @@ public class InsideListingActivity extends AppCompatActivity {
 
         try {
             commentObject.put("Comment", data);
-            commentObject.put("Token", "a95c508e-cc0f-40f5-8d71-391f83f451b4");//token);
+            commentObject.put("Token", token);//token);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -189,6 +210,7 @@ public class InsideListingActivity extends AppCompatActivity {
 
                         setMyListings(listings);
 
+                        Toast.makeText(InsideListingActivity.this, "" + listings, Toast.LENGTH_SHORT).show();
                         ListingRVAdapter myAdapter = new ListingRVAdapter(getMyListings(), InsideListingActivity.this);
 
                         //set number of columns depending on orientation

@@ -123,7 +123,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/email"
-            android:layout_marginTop="20dip"
+            android:layout_marginTop="10dp"
             android:background="#ea4c88"
             android:text="@string/btn_register"
             android:textColor="@color/white" />
@@ -135,7 +135,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/btnRegister"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:background="@null"
             android:text="@string/btn_link_to_login"
             android:textAllCaps="false"

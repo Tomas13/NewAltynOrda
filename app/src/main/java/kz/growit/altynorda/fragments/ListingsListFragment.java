@@ -175,7 +175,7 @@ public class ListingsListFragment extends Fragment {
 
         CityId = 1; //need to change according to spinner selection
 
-        String url = "http://altynorda.kz/api/ListingsAPI/GetCityListings?cityId=" + CityId ;
+        String url = "http://altynorda.kz/ListingsAPI/GetCityListings?cityId=" + CityId ;
         JsonArrayRequest getListingsByCityReq = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
