@@ -77,6 +77,7 @@ String title;
         untilPrice = (EditText) findViewById(R.id.priceTo);
         searchButtonSearchFragment = (Button) findViewById(R.id.searchButtonSearchFragment);
 
+        initListingTypeSpinner();
         initListingCitySpinner();
         initListingStatusSpinner();
         initCurrencySpinner();
@@ -166,7 +167,7 @@ String title;
                 switch (Exchange){
                     case "₸": ExchangeId = 1; break;
                     case "$": ExchangeId= 2; break;
-                    case "€": ExchangeId = 3; break;
+                    case "€": ExchangeId = 4; break;
                     default: ExchangeId = 1; break;
                 }
 //                Toast.makeText(SearchActivity.this, ExchangeId + " Exchange", Toast.LENGTH_SHORT).show();
@@ -182,7 +183,7 @@ String title;
                     default: cityId = -1; break;
                 }
 //                Toast.makeText(SearchActivity.this, cityId + "", Toast.LENGTH_SHORT).show();
-//                progressView.start();
+                progressView.start();
 
 
                 searchListingRequest(cityId, fromPriceInt, untilPriceInt, ExchangeId, StatusId);
@@ -285,6 +286,23 @@ String title;
 //        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //        listingStatus.setAdapter(dataAdapter);
 //    }
+
+
+
+    //initialize listing type spinner
+    public void initListingTypeSpinner() {
+        List<String> list = new ArrayList<String>();
+
+        list.add("Квартира");
+        list.add("Дом");
+        list.add("Дача");
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getApplicationContext(),
+                android.R.layout.simple_spinner_item, list);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        listingType.setAdapter(dataAdapter);
+    }
+
 
     //initialize listing status spinner
     public void initCurrencySpinner() {

@@ -44,6 +44,7 @@ public class AddPropertyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_property);
 
+
         TitleEdit = (com.rey.material.widget.EditText) findViewById(R.id.Title);
         PriceEdit = (EditText) findViewById(R.id.Price);
         AddressEdit = (EditText) findViewById(R.id.Address);

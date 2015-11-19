@@ -3,9 +3,9 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#6CC7EF</item>
-        <item name="colorPrimaryDark">#0288D1</item>
-        <item name="colorAccent">#FF4081</item>
+        <item name="colorPrimary">#2196F3</item>
+        <item name="colorPrimaryDark">#1976D2</item>
+        <item name="colorAccent">#DFC388</item>
     </style>
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
@@ -13,12 +13,5 @@
     </style>
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-
-    <style name="EditTextCustomHolo" parent="android:Widget.EditText">
-        <item name="android:background">#FF4081</item>
-        <item name="android:textColor">#ffffff</item>
-    </style>
-
 
 </resources>

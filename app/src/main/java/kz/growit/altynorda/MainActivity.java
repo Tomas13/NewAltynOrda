@@ -1,7 +1,9 @@
 package kz.growit.altynorda;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -158,12 +160,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (isLoggedIn) {
+                if (!isLoggedIn) {
 
                     MaterialDialog dialog = builder.build();
                     dialog.show();
                 } else {
+
                     view.getContext().startActivity(new Intent(MainActivity.this, AddPropertyActivity.class));
+
                 }
 //                    Toast.makeText(MainActivity.this, "", Toast.LENGTH_SHORT).show();
 
