@@ -133,26 +133,26 @@ String title;
 
                 if(untilPrice.getText().toString().equals("") && fromPrice.getText().toString().equals("")){
 
-                    Toast.makeText(SearchActivity.this, "Both are empty", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(SearchActivity.this, "Both are empty", Toast.LENGTH_SHORT).show();
 
                     untilPriceInt = -1; fromPriceInt=-1;
 
                 }else if(untilPrice.getText().toString().equals("")){
                     untilPriceInt = -1;
                     fromPriceInt = Integer.parseInt(fromPrice.getText().toString());
-                    Toast.makeText(SearchActivity.this, "priceTo is empty " + fromPriceInt, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(SearchActivity.this, "priceTo is empty " + fromPriceInt, Toast.LENGTH_SHORT).show();
 
                 }else if(fromPrice.getText().toString().equals("")) {
 
                     fromPriceInt = -1;
                     untilPriceInt = Integer.parseInt(untilPrice.getText().toString());
-                    Toast.makeText(SearchActivity.this, "priceFrom is empty " + untilPriceInt, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(SearchActivity.this, "priceFrom is empty " + untilPriceInt, Toast.LENGTH_SHORT).show();
                 }else{
                     //both fields are filled
                     fromPriceInt = Integer.parseInt(fromPrice.getText().toString());
                     untilPriceInt = Integer.parseInt(untilPrice.getText().toString());
 
-                    Toast.makeText(SearchActivity.this, fromPriceInt + " + " + untilPriceInt, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(SearchActivity.this, fromPriceInt + " + " + untilPriceInt, Toast.LENGTH_SHORT).show();
 
                 }
 
@@ -160,7 +160,7 @@ String title;
                 switch (Status){
                     case "Аренда": StatusId = 1; break;
                     case "Продажа": StatusId= 2; break;
-                    default: ExchangeId = 1; break;
+                    default: StatusId = 1; break;
                 }
 
                 switch (Exchange){
@@ -194,7 +194,7 @@ String title;
     public void searchListingRequest(int cityId, int fromPriceSend, int untilPriceSend, int exchangeId, int StatusId) {
 
         if(fromPriceSend != -1 && untilPriceSend !=-1){
-            url = "http://altynorda.kz/SearchAPI/Index?CityId=" + cityId + "&ExhangeId=" + exchangeId +
+            url = "http://altynorda.kz/SearchAPI/Index?CityId=" + cityId + "&ExchangeId=" + exchangeId +
                     "&fromPrice=" + fromPriceSend + "&untilPrice=" + untilPriceSend + "&ListingStatusId=" + StatusId;
         }else if(fromPriceSend != -1){
             url = "http://altynorda.kz/SearchAPI/Index?CityId=" + cityId + "&ExchangeId=" + exchangeId +
@@ -203,7 +203,7 @@ String title;
             url = "http://altynorda.kz/SearchAPI/Index?CityId=" + cityId + "&ExchangeId=" + exchangeId +
                     "&untilPrice=" + untilPriceSend + "&ListingStatusId=" + StatusId;
         }else{
-            url = "http://altynorda.kz/SearchAPI/Index?CityId=" + cityId + "&ListingStatusId=" + StatusId;
+            url = "http://altynorda.kz/SearchAPI/Index?CityId=" + cityId + "&ExchangeId=" + exchangeId + "&ListingStatusId=" + StatusId;
         }
 
 //        String url = "http://altynorda.kz/SearchAPI/Index?CityId=" + cityId;
@@ -322,45 +322,50 @@ String title;
     //initialize listing type spinner
     public void initListingStatusSpinner() {
         listStatus = new ArrayList<String>();
+        listStatus.add("Аренда");
+        listStatus.add("Продажа");
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getApplicationContext(),
+                android.R.layout.simple_spinner_item, listStatus);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        listingStatus.setAdapter(dataAdapter);
 
-
-        String url = "http://altynorda.kz/api/ListingStatusesAPI/GetListingStatuses";
-
-        JsonArrayRequest listingStatusRequest = new JsonArrayRequest(Request.Method.GET,
-                url,
-                new JSONObject(),
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-
-                        for (int i = 0; i < response.length(); i++) {
-                            try {
-                                JSONObject jsonObject = response.getJSONObject(i);
-                                listStatus.add(i, jsonObject.getString("Name"));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getApplicationContext(),
-                                    android.R.layout.simple_spinner_item, listStatus);
-                            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            listingStatus.setAdapter(dataAdapter);
-                        }
-
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-//                        NetworkResponse response = error.networkResponse;
-
-                        String errors = error.getMessage();
-                        Toast.makeText(getApplicationContext(), errors, Toast.LENGTH_LONG).show();
-
-                    }
-                });
-        AppController.getInstance().addToRequestQueue(listingStatusRequest);
+//        String url = "http://altynorda.kz/api/ListingStatusesAPI/GetListingStatuses";
+//
+//        JsonArrayRequest listingStatusRequest = new JsonArrayRequest(Request.Method.GET,
+//                url,
+//                new JSONObject(),
+//                new Response.Listener<JSONArray>() {
+//                    @Override
+//                    public void onResponse(JSONArray response) {
+//
+//                        for (int i = 0; i < response.length(); i++) {
+//                            try {
+//                                JSONObject jsonObject = response.getJSONObject(i);
+//                                listStatus.add(i, jsonObject.getString("Name"));
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//                            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getApplicationContext(),
+//                                    android.R.layout.simple_spinner_item, listStatus);
+//                            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                            listingStatus.setAdapter(dataAdapter);
+//                        }
+//
+//
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//
+////                        NetworkResponse response = error.networkResponse;
+//
+//                        String errors = error.getMessage();
+//                        Toast.makeText(getApplicationContext(), errors, Toast.LENGTH_LONG).show();
+//
+//                    }
+//                });
+//        AppController.getInstance().addToRequestQueue(listingStatusRequest);
 
 
 

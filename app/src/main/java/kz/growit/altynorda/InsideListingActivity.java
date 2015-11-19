@@ -210,7 +210,7 @@ public class InsideListingActivity extends AppCompatActivity {
 
                         setMyListings(listings);
 
-                        Toast.makeText(InsideListingActivity.this, "" + getMyListings().get(0).getAllComments(), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(InsideListingActivity.this, "" + getMyListings().get(0).getAllComments(), Toast.LENGTH_SHORT).show();
                         ListingRVAdapter myAdapter = new ListingRVAdapter(getMyListings(), InsideListingActivity.this);
 
                         //set number of columns depending on orientation
