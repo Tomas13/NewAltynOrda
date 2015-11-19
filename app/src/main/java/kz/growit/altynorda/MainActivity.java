@@ -3,12 +3,14 @@ package kz.growit.altynorda;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
@@ -23,7 +25,10 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.Spinner;
 
-import java.text.SimpleDateFormat;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
     private Button FiltersButton;
     private Boolean isLoggedIn = false;
 
-    ArrayList<Cities> citiesArrayList;
 
+    private ArrayList<Cities> citiesArrayList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +52,25 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        SharedPreferences main = getSharedPreferences(BaseActivity.APP_PREFERENCES, MODE_PRIVATE);
+
+        Bundle intentData = getIntent().getExtras();
+        if (intentData!=null){
+            String cities = intentData.getString("citiesToBundle");
+            try {
+                JSONArray citiesArray = new JSONArray(cities);
+                for (int i = 0; i < citiesArray.length(); i++) {
+                    JSONObject citiesObject = citiesArray.getJSONObject(i);
+                    Cities citiesModel = new Cities(citiesObject);
+                    citiesArrayList.add(i, citiesModel);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
+//        SharedPreferences main = getSharedPreferences(BaseActivity.APP_PREFERENCES, MODE_PRIVATE);
 
 
         FiltersButton = (Button) findViewById(R.id.FiltersButton);
@@ -63,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
         //just cheking for token. Need to DELETE this two lines
         SharedPreferences loginPrefs = getSharedPreferences("LoginPrefs", MainActivity.MODE_PRIVATE);
-        Toast.makeText(getApplicationContext(), loginPrefs.getString("Token", "not logged in"), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), loginPrefs.getString("Token", "not logged in"), Toast.LENGTH_SHORT).show();
 
 
         String token = loginPrefs.getString("Token", "not logged in");
@@ -79,19 +102,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         List<String> list = new ArrayList<String>();
-        list.add("Astana");
-        list.add("Almaty");
-        list.add("Karaganda");
-        list.add("Aktau");
-        list.add("Zhezkazgan");
-        list.add("Taraz");
-        list.add("Kostanay");
-        list.add("Astana33");
 
-//        final ArrayList<String> arrayList = new ;
-//        for (int i = 0; i < arrayList.size(); i++) {
-//            list.add(arrayList.get(i).getName());
-//        }
+        for (int i = 0; i < citiesArrayList.size(); i++) {
+            list.add(i, citiesArrayList.get(i).getName());
+        }
+
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getApplicationContext(),
                 android.R.layout.simple_spinner_item, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -177,6 +192,65 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+
+//    private void initCitySpinner() {
+////        progressView.start();
+//
+//        String url = "http://altynorda.kz/api/citiesapi/getcities";
+//        JsonObjectRequest getListingsById = new JsonObjectRequest(
+//                Request.Method.GET,
+//                url,
+//                new JSONObject(),
+//                new Response.Listener<JSONObject>() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//
+//                        Listings listing = new Listings(response);
+//                        listings.add(listing);
+//
+//
+//                        setMyListings(listings);
+//                        ListingsRVAdapter myAdapter = new ListingsRVAdapter(listings, FavoritesActivity.this);
+////                        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+//
+//
+//                        //set number of columns depending on orientation
+//                        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+//                            recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 1));
+//                        }
+//                        else{
+//                            recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
+//                        }
+//
+//                        recyclerView.setHasFixedSize(true);
+//                        recyclerView.setAdapter(myAdapter);
+//
+//
+//                        progressView.stop();
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        error.printStackTrace();
+//                    }
+//                }
+//        );
+//
+//        // Adding request to request queue
+//        AppController.getInstance().addToRequestQueue(getListingsById, "get listings");
+//    }
+
+    private ArrayList<Cities> myCities;
+
+    public ArrayList<Cities> getMyCities() {
+        return myCities;
+    }
+
+    public void setMyCities(ArrayList<Cities> myCities) {
+        this.myCities = myCities;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

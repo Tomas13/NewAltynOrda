@@ -109,6 +109,7 @@ public class InsideListingActivity extends AppCompatActivity {
 //                    Toast.makeText(v.getContext(), intentData + "", Toast.LENGTH_SHORT).show();
                 progressView.start();
                 postComment(comment.getText().toString(), intentData, token);
+                comment.setText("");
             }
         });
 
