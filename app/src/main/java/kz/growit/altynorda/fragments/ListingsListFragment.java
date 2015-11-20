@@ -69,42 +69,6 @@ public class ListingsListFragment extends Fragment {
 
 
 
-    public void onDatePick(final View v) {
-
-        boolean isLightTheme = ThemeManager.getInstance().getCurrentTheme() == 0;
-
-        builder = new DatePickerDialog.Builder(isLightTheme ?
-                R.style.Material_App_Dialog_DatePicker_Light : R.style.Material_App_Dialog_DatePicker) {
-            @Override
-            public void onPositiveActionClicked(com.rey.material.app.DialogFragment fragment) {
-                DatePickerDialog dialog = (DatePickerDialog) fragment.getDialog();
-                String date = dialog.getFormattedDate(SimpleDateFormat.getDateInstance());
-                if (v.getTag().equals(0)) {
-                    arrivalDate.setText(date);
-                } else {
-                    departureDate.setText(date);
-                }
-                Toast.makeText(v.getContext(), "Date is " + date, Toast.LENGTH_SHORT).show();
-                super.onPositiveActionClicked(fragment);
-            }
-
-
-            @Override
-            public void onNegativeActionClicked(com.rey.material.app.DialogFragment fragment) {
-                Toast.makeText(v.getContext(), "Cancelled", Toast.LENGTH_SHORT).show();
-                super.onNegativeActionClicked(fragment);
-            }
-        };
-
-        builder.positiveAction("OK")
-                .negativeAction("CANCEL");
-
-
-        DialogFragment fragment1 = DialogFragment.newInstance(builder);
-        fragment1.show(getChildFragmentManager(), null);
-    }
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

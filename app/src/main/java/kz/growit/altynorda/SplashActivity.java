@@ -1,5 +1,6 @@
 package kz.growit.altynorda;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,7 +16,7 @@ import org.json.JSONObject;
 
 
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends Activity {
 
     ProgressView progressView;
     String urlGetCities = "http://altynorda.kz/api/citiesapi/getcities";

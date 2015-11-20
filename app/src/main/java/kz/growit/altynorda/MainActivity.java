@@ -165,6 +165,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(Spinner parent, View view, int position, long id) {
 //                citiesArrayList.get(position)
+                int cityId = citiesArrayList.get(position).getId();
+
                 Toast.makeText(MainActivity.this, "Надо доделать еще здесь;)", Toast.LENGTH_SHORT).show();
             }
         });
@@ -194,10 +196,10 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-//    private void initCitySpinner() {
+//    private void initCitySpinner(int cityId) {
 ////        progressView.start();
 //
-//        String url = "http://altynorda.kz/api/citiesapi/getcities";
+//        String url = "http://altynorda.kz/ListingsAPI/GetCityListings?cityId=1";
 //        JsonObjectRequest getListingsById = new JsonObjectRequest(
 //                Request.Method.GET,
 //                url,
@@ -242,15 +244,15 @@ public class MainActivity extends AppCompatActivity {
 //        AppController.getInstance().addToRequestQueue(getListingsById, "get listings");
 //    }
 
-    private ArrayList<Cities> myCities;
-
-    public ArrayList<Cities> getMyCities() {
-        return myCities;
-    }
-
-    public void setMyCities(ArrayList<Cities> myCities) {
-        this.myCities = myCities;
-    }
+//    private ArrayList<Cities> myCities;
+//
+//    public ArrayList<Cities> getMyCities() {
+//        return myCities;
+//    }
+//
+//    public void setMyCities(ArrayList<Cities> myCities) {
+//        this.myCities = myCities;
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
